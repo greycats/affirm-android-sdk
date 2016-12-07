@@ -1,0 +1,47 @@
+{
+  "items": {
+    "test_item": {
+      "display_name": "Affirm Test Item",
+      "sku": "test_item",
+      "unit_price": 1500,
+      "qty": 1,
+      "item_url": "http://sandbox.affirm.com/item",
+      "item_image_url": "http://sandbox.affirm.com/image.png"
+    }
+  },
+  "discounts": {
+    "Affirm Test Discount": {
+      "discount_display_name": "Affirm Test Discount",
+      "discount_amount": 300
+    }
+  },
+  "billing": {
+    "name": {
+      "full": "Test Tester"
+    },
+    "address": {
+      "line1": "325 Pacific Ave.",
+      "line2": "",
+      "city": "San Francisco",
+      "state": "CA",
+      "zipcode": "94111",
+      "country": "USA"
+    }
+  },
+  "shipping": {
+    "name": {
+      "full": "Test Tester"
+    },
+    "address": {
+      "line1": "325 Pacific Ave.",
+      "line2": "",
+      "city": "San Francisco",
+      "state": "CA",
+      "zipcode": "94111",
+      "country": "USA"
+    }
+  },
+  "shipping_amount": 500,
+  "tax_amount": 100,
+  "total": 1800
+}
