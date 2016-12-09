@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.affirm.affirmsdk">
+
+  <uses-permission android:name="android.permission.INTERNET"/>
+
+  <application>
+
+    <activity
+        android:name="com.affirm.affirmsdk.CheckoutActivity"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:screenOrientation="portrait">
+    </activity>
+
+  </application>
+
+</manifest>

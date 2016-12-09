@@ -1,0 +1,26 @@
+buildscript {
+  repositories {
+    jcenter()
+    maven {
+      url 'https://registry.affirm-stage.com/artifactory/plugins-release'
+    }
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.2.3'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+  }
+}
+
+allprojects {
+  repositories {
+    mavenCentral()
+  }
+}
+
+ext {
+  minSdkVersion = 15
+  compileSdkVersion = 25
+  buildToolsVersion = '25.0.0'
+}
+
+apply from: rootProject.file('dependencies.gradle')

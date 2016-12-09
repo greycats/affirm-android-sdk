@@ -1,0 +1,37 @@
+<resources>
+  <!-- primary palette -->
+  <color name="sky_blue">#00C8E5</color>
+  <color name="indigo">#0FA0EA</color>
+  <color name="blue">#2984EE</color>
+  <color name="purple">#5846E4</color>
+  <color name="slate">#1E2F59</color>
+  <!-- secondary palette -->
+  <color name="sky_blue_dark">#00A1B9</color>
+  <color name="indigo_dark">#0083C7</color>
+  <color name="blue_dark">#005DCA</color>
+  <color name="purple_dark">#3D2DBA</color>
+  <color name="indigo16">#290FA0EA</color>
+  <!-- black scale -->
+  <color name="black10">#F5F8FC</color>
+  <color name="black20">#F2F4F5</color>
+  <color name="black30">#D5D9DE</color>
+  <color name="black40">#ABB4BE</color>
+  <color name="black50">#9DA6B0</color>
+  <color name="black60">#858E99</color>
+  <color name="black70">#6F7A87</color>
+  <color name="black80">#495662</color>
+  <color name="black90">#373E47</color>
+  <color name="black100">#23292F</color>
+  <!-- white scale -->
+  <color name="white">@android:color/white</color>
+  <color name="white22">#38FFFFFF</color>
+  <color name="white80">#CCFFFFFF</color>
+  <!-- other colors -->
+  <color name="green">#27CF8B</color>
+  <color name="red">#FA596B</color>
+  <color name="transparent">@android:color/transparent</color>
+  <color name="transparent20">#22000000</color>
+  <color name="transparent30">#44000000</color>
+  <color name="transparent50">#88000000</color>
+  <color name="transparent90">#DD000000</color>
+</resources>
