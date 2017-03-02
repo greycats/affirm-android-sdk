@@ -16,7 +16,7 @@ allprojects {
   repositories {
     jcenter()
     maven {
-      url 'https://github.com/Affirm/affirm-android-sdk/raw/master/releases'
+      url 'https://github.com/Affirm/affirm-android-sdk/raw/master/snapshots'
     }
   }
 }

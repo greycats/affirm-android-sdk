@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.affirm.affirmsdk.Affirm;
+import com.affirm.affirmsdk.CancellableRequest;
+import com.affirm.affirmsdk.PromoCallback;
 import com.affirm.affirmsdk.models.Address;
 import com.affirm.affirmsdk.models.Checkout;
 import com.affirm.affirmsdk.models.Item;
@@ -17,29 +19,65 @@ import com.affirm.androidsamplesdk.R;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.affirm.affirmsdk.AffirmColor.AffirmColorTypeBlack;
+import static com.affirm.affirmsdk.AffirmLogoType.AffirmDisplayTypeSymbol;
+
 public class MainActivity extends AppCompatActivity implements Affirm.CheckoutCallbacks {
   private Button checkout;
+  private Button siteModalButton;
+  private Button productModalButton;
   private TextView quantity;
+  private TextView promo;
 
   private Affirm affirm;
+  private CancellableRequest cancellablePromo;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
     checkout = (Button) findViewById(R.id.checkout);
+    siteModalButton = (Button) findViewById(R.id.siteModalButton);
+    productModalButton = (Button) findViewById(R.id.productModalButton);
     quantity = (TextView) findViewById(R.id.quantity);
+    promo = (TextView) findViewById(R.id.promo);
+
+    affirm = Affirm.builder()
+        .setEnvironment(Affirm.Environment.SANDBOX)
+        .setMerchantPublicKey("Y8CQXFF044903JC0")
+        .build();
 
     checkout.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         proceedToCheckout();
       }
     });
-    affirm = Affirm.builder()
-        .setEnvironment(Affirm.Environment.SANDBOX)
-        .setFinancialProductKey("NMDEGYJV2ZT5D95T")
-        .setMerchantPublicKey("729JKW3C3DTZDTRY")
-        .build();
+
+    siteModalButton.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        affirm.launchSiteModal(MainActivity.this, "5LNMQ33SEUYHLNUC");
+      }
+    });
+
+    productModalButton.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        affirm.launchProductModal(MainActivity.this, 1100, "0Q97G0Z4Y4TLGHGB");
+      }
+    });
+
+    cancellablePromo =
+        affirm.writePromoToTextView(promo, "SFCRL4VYS0C78607", 144.5f, AffirmDisplayTypeSymbol,
+            AffirmColorTypeBlack, new PromoCallback() {
+              @Override public void onPromoWritten(TextView textView) {
+                cancellablePromo = null;
+              }
+
+              @Override public void onFailure(TextView textView, Throwable throwable) {
+                Toast.makeText(MainActivity.this, "Checkout token: " + throwable.getMessage(),
+                    Toast.LENGTH_LONG).show();
+                cancellablePromo = null;
+              }
+            });
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -83,9 +121,15 @@ public class MainActivity extends AppCompatActivity implements Affirm.CheckoutCa
         .setTaxAmount(10000)
         .setTotal(110000)
         .build();
-    
 
     affirm.launchCheckout(this, checkout);
+  }
+
+  @Override protected void onPause() {
+    super.onPause();
+    if (cancellablePromo != null) {
+      cancellablePromo.cancelRequest();
+    }
   }
 
   @Override public void onAffirmCheckoutSuccess(String token) {
