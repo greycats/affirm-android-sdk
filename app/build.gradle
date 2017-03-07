@@ -35,5 +35,5 @@ configurations.all {
 dependencies {
   final String ANDROID_SUPPORT_VERSION = '25.2.0'
   compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
-  compile "com.affirm:affirm-android-sdk:0.2.0"
+  compile "com.affirm:affirm-android-sdk:0.2.1"
 }
