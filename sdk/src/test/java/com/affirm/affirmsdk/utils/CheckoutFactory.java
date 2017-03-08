@@ -16,7 +16,7 @@ public class CheckoutFactory {
         .setImageUrl("http://www.image.com/111")
         .setQty(1)
         .setSku("wheel")
-        .setUnitPrice(100000)
+        .setUnitPrice(1000f)
         .setUrl("http://merchant.com/great_deal_wheel")
         .build();
 
@@ -38,9 +38,9 @@ public class CheckoutFactory {
         .setItems(items)
         .setBilling(shipping)
         .setShipping(shipping)
-        .setShippingAmount(100000)
-        .setTaxAmount(10000)
-        .setTotal(110000)
+        .setShippingAmount(1000f)
+        .setTaxAmount(100f)
+        .setTotal(1100f)
         .build();
   }
 }

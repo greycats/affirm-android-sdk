@@ -2,15 +2,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'maven-publish'
 
 def packageName = 'com.affirm'
-def libraryVersion = '0.1.0'
+def libraryVersion = '0.2.2'
 
 android {
   compileSdkVersion 25
-  buildToolsVersion "25.0.1"
+  buildToolsVersion "25.0.2"
 
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_7
@@ -90,13 +89,12 @@ dependencies {
 
   compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
 
-
   provided "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
   provided "com.google.code.gson:gson:$GSON_VERSION"
 
-  apt "com.ryanharter.auto.value:auto-value-gson:$AUTOVALUE_VERSION"
+  annotationProcessor "com.ryanharter.auto.value:auto-value-gson:$AUTOVALUE_VERSION"
   compile "com.ryanharter.auto.value:auto-value-gson:$AUTOVALUE_VERSION"
-  apt "com.ryanharter.auto.value:auto-value-parcel:0.2.5"
+  annotationProcessor "com.ryanharter.auto.value:auto-value-parcel:0.2.5"
 
   testCompile 'com.google.truth:truth:0.28'
   testCompile 'junit:junit:4.12'

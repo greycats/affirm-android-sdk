@@ -3,7 +3,8 @@ package com.affirm.affirmsdk;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.widget.TextView;
+import com.affirm.affirmsdk.di.AffirmInjector;
 import com.affirm.affirmsdk.models.Checkout;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -11,11 +12,12 @@ import static android.app.Activity.RESULT_OK;
 
 public final class Affirm {
   private static final int CHECKOUT_REQUEST = 8076;
-  private static final String TAG = Affirm.class.getCanonicalName();
+  //private static final String TAG = Affirm.class.getCanonicalName();
   private String merchant;
   private Environment environment;
-  private String financialProductKey;
   private String name;
+
+  private final AffirmInjector component;
 
   public interface CheckoutCallbacks {
     void onAffirmCheckoutError(String message);
@@ -25,12 +27,12 @@ public final class Affirm {
     void onAffirmCheckoutSuccess(String token);
   }
 
-  private Affirm(String merchant, Environment environment, String financialProductKey,
-      String name) {
+  private Affirm(String merchant, Environment environment, String name) {
     this.merchant = merchant;
     this.environment = environment;
-    this.financialProductKey = financialProductKey;
     this.name = name;
+
+    component = new AffirmInjector();
   }
 
   public static Builder builder() {
@@ -38,25 +40,32 @@ public final class Affirm {
   }
 
   public void launchCheckout(@NonNull Activity activity, @NonNull Checkout checkout) {
-    Log.d(TAG, "affirm launchCheckout");
     CheckoutActivity.launchCheckout(activity, CHECKOUT_REQUEST, merchant, checkout,
-        financialProductKey, environment.name, name);
-    Log.d(TAG, "end affirm launchCheckout");
+        environment.baseUrl1, name);
+  }
+
+  public void launchProductModal(@NonNull Activity activity, float amount, String modalId) {
+    ModalActivity.launch(activity, merchant, amount, environment.baseUrl1, true, modalId);
+  }
+
+  public void launchSiteModal(@NonNull Activity activity, String modalId) {
+    ModalActivity.launch(activity, merchant, 0f, environment.baseUrl1, false, modalId);
   }
 
   public enum Environment {
-    SANDBOX("sandbox.affirm-stage.com"),
-    STAGE("www.affirm-stage.com"),
-    PRODUCTION("api-cf.affirm.com");
+    SANDBOX("sandbox.affirm.com", "cdn1-sandbox.affirm.com"),
+    PRODUCTION("api-cf.affirm.com", "cdn1.affirm.com");
 
-    private final String name;
+    private final String baseUrl1;
+    private final String baseUrl2;
 
-    Environment(String s) {
-      name = s;
+    Environment(String baseUrl1, String baseUrl2) {
+      this.baseUrl1 = baseUrl1;
+      this.baseUrl2 = baseUrl2;
     }
 
     @Override public String toString() {
-      return "Environment{name=" + name + '}';
+      return "Environment{" + baseUrl1 + ", " + baseUrl2 + '}';
     }
   }
 
@@ -82,10 +91,19 @@ public final class Affirm {
     return true;
   }
 
+  public CancellableRequest writePromoToTextView(@NonNull TextView textView,
+      @NonNull String promoId, float amount, @NonNull AffirmLogoType logoType,
+      @NonNull AffirmColor affirmColor, @NonNull PromoCallback promoCallback) {
+
+    final PromoJob promoJob =
+        new PromoJob(component, merchant, environment.baseUrl2, textView, promoId, amount, logoType,
+            affirmColor, promoCallback);
+    return promoJob.getPromo();
+  }
+
   public static final class Builder {
     private String publicKey;
     private Environment environment = Environment.SANDBOX;
-    private String financialProductKey;
     private String name;
 
     private Builder() {
@@ -101,8 +119,7 @@ public final class Affirm {
       return this;
     }
 
-    public Builder setFinancialProductKey(@NonNull String financialProductKey) {
-      this.financialProductKey = financialProductKey;
+    @Deprecated public Builder setFinancialProductKey(@NonNull String financialProductKey) {
       return this;
     }
 
@@ -116,10 +133,7 @@ public final class Affirm {
         throw new IllegalArgumentException("public key cannot be null");
       }
 
-      if (financialProductKey == null) {
-        throw new IllegalArgumentException("financial product key cannot be null");
-      }
-      return new Affirm(publicKey, environment, financialProductKey, name);
+      return new Affirm(publicKey, environment, name);
     }
   }
 }

@@ -24,18 +24,18 @@ import static org.mockito.Mockito.when;
   @Test public void shouldOverrideUrlLoading_Confirmation() {
     affirmWebViewClient.shouldOverrideUrlLoading(webview,
         "affirm://checkout/confirmed?checkout_token=123");
-    Mockito.verify(callbacks).onCheckoutConfirmation("123");
+    Mockito.verify(callbacks).onWebViewConfirmation("123");
   }
 
   @Test public void shouldOverrideUrlLoading_Cancellation() {
     affirmWebViewClient.shouldOverrideUrlLoading(webview, "affirm://checkout/cancelled");
-    Mockito.verify(callbacks).onCheckoutCancellation();
+    Mockito.verify(callbacks).onWebViewCancellation();
   }
 
   @Test public void shouldOverrideUrlLoading_Random() {
     affirmWebViewClient.shouldOverrideUrlLoading(webview, "http://www.affirm.com/api/v1/get");
-    Mockito.verify(callbacks, never()).onCheckoutConfirmation(any(String.class));
-    Mockito.verify(callbacks, never()).onCheckoutCancellation();
+    Mockito.verify(callbacks, never()).onWebViewConfirmation(any(String.class));
+    Mockito.verify(callbacks, never()).onWebViewCancellation();
   }
 
   @Test public void onReceivedError() {
@@ -44,6 +44,6 @@ import static org.mockito.Mockito.when;
     when(error.toString()).thenReturn("error msg");
 
     affirmWebViewClient.onReceivedError(webview, resourceRequest, error);
-    Mockito.verify(callbacks, never()).onCheckoutError(new Exception("error msg"));
+    Mockito.verify(callbacks, never()).onWebViewError(new Exception("error msg"));
   }
 }

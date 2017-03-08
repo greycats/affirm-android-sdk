@@ -9,7 +9,6 @@ Start by creating an affirm instance.
 ```java
 affirm = Affirm.builder()
         .setEnvironment(Affirm.Environment.SANDBOX)
-        .setFinancialProductKey("NMDEGYJV2ZT5D95T")
         .setMerchantPublicKey("729JKW3C3DTZDTRY")
         .build();
 ```
@@ -24,9 +23,9 @@ final Checkout checkout = Checkout.builder()
         .setItems(items)
         .setBilling(shipping)
         .setShipping(shipping)
-        .setShippingAmount(100000)
-        .setTaxAmount(10000)
-        .setTotal(110000)
+        .setShippingAmount(0f)
+        .setTaxAmount(100f)
+        .setTotal(1100f)
         .build();
 
 affirm.launchCheckout(this, checkout);

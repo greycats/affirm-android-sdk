@@ -1,6 +1,8 @@
 package com.affirm.affirmsdk.models;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import com.affirm.affirmsdk.AffirmUtils;
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -28,11 +30,13 @@ import com.google.gson.annotations.SerializedName;
   @SerializedName("item_image_url") public abstract String imageUrl();
 
   @AutoValue.Builder public abstract static class Builder {
+    private Float mUnitPrice;
+
     public abstract Builder setDisplayName(String value);
 
     public abstract Builder setSku(String value);
 
-    public abstract Builder setUnitPrice(Integer value);
+    abstract Builder setUnitPrice(Integer value);
 
     public abstract Builder setQty(Integer value);
 
@@ -40,6 +44,16 @@ import com.google.gson.annotations.SerializedName;
 
     public abstract Builder setImageUrl(String value);
 
-    public abstract Item build();
+    abstract Item autoBuild();
+
+    public Builder setUnitPrice(@NonNull Float value) {
+      mUnitPrice = value;
+      return this;
+    }
+
+    public Item build() {
+      setUnitPrice(AffirmUtils.decimalDollarsToIntegerCents(mUnitPrice));
+      return autoBuild();
+    }
   }
 }

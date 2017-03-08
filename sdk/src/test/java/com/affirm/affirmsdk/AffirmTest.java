@@ -14,27 +14,17 @@ public class AffirmTest {
   Affirm affirm;
 
   @Before public void setup() {
-    affirm = Affirm.builder().setFinancialProductKey("sdf").setMerchantPublicKey("sdf").build();
+    affirm = Affirm.builder().setMerchantPublicKey("sdf").build();
   }
 
   @Test public void builder() throws Exception {
     Affirm.Builder builder =
-        Affirm.builder().setFinancialProductKey("sdf").setMerchantPublicKey("sdf");
+        Affirm.builder().setMerchantPublicKey("sdf");
     builder.build();
   }
 
-  @Test public void builder_FinancialProductKey_NotPassed() throws Exception {
-    Affirm.Builder builder = Affirm.builder().setMerchantPublicKey("sdf");
-
-    try {
-      builder.build();
-      Assert.fail("Should have thrown exception");
-    } catch (IllegalArgumentException e) {
-    }
-  }
-
   @Test public void builder_PublicKey_NotPassed() throws Exception {
-    Affirm.Builder builder = Affirm.builder().setFinancialProductKey("sdf");
+    Affirm.Builder builder = Affirm.builder();
 
     try {
       builder.build();

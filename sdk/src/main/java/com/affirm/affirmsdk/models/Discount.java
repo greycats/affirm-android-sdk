@@ -1,6 +1,8 @@
 package com.affirm.affirmsdk.models;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import com.affirm.affirmsdk.AffirmUtils;
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -20,10 +22,22 @@ import com.google.gson.annotations.SerializedName;
   @SerializedName("discount_amount") public abstract Integer amount();
 
   @AutoValue.Builder public abstract static class Builder {
+    private Float mAmount;
+
     public abstract Builder setDisplayName(String value);
 
-    public abstract Builder setAmount(Integer value);
+    abstract Builder setAmount(Integer value);
 
-    public abstract Discount build();
+    abstract Discount autoBuild();
+
+    public Builder setAmount(@NonNull Float value) {
+      mAmount = value;
+      return this;
+    }
+
+    public Discount build() {
+      setAmount(AffirmUtils.decimalDollarsToIntegerCents(mAmount));
+      return autoBuild();
+    }
   }
 }

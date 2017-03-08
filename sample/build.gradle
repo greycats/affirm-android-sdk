@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
   compileSdkVersion 25
-  buildToolsVersion "25.0.1"
+  buildToolsVersion "25.0.2"
 
   defaultConfig {
     applicationId "com.example.sample"
@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-  compile 'com.android.support:appcompat-v7:25.0.1'
+  compile 'com.android.support:appcompat-v7:25.2.0'
   compile project (':sdk')
 
   compile "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
