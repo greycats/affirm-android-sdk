@@ -69,7 +69,7 @@ class PromoJob {
 
   private void getPricing(final PromoResponse promoResponse) {
 
-    final AffirmRequest.Endpoint endpoint = new PricingRequest(publicKey, amount, promoResponse);
+    final AffirmRequest.Endpoint endpoint = new PricingEndpoint(publicKey, amount, promoResponse);
     currentRequest =
         new AffirmRequest<>(PricingResponse.class, baseUrl, okHttpClient, gson, endpoint);
 

@@ -56,15 +56,15 @@ class AffirmRequest<T> {
 
           if (response.code() == 403) {
             callback.onFailure(
-                new Exception("Got error from checkout request: " + response.code()));
-          } else if (response.code() >= 400 && response.code() < 500) {
+                new Exception("Got error for request: " + response.code()));
+          } else if (response.code() >= 400 && response.code() < 500 && response.code() != 404) {
             final ErrorResponse errorResponse =
                 gson.fromJson(response.body().string(), ErrorResponse.class);
 
             callback.onFailure(new ServerError(errorResponse));
           } else {
             callback.onFailure(
-                new Exception("Got error from checkout request: " + response.code()));
+                new Exception("Got error for request: " + response.code()));
           }
 
           return;

@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements Affirm.CheckoutCa
         .setCountry("USA")
         .setLine1("333 Kansas st")
         .setState("CA")
-        .setZipcode("94103")
+        .setZipcode("94107")
         .build();
 
     final Shipping shipping = Shipping.builder().setAddress(address).setName(name).build();
