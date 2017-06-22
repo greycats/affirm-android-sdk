@@ -18,7 +18,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Matchers.any;
 
@@ -39,13 +39,16 @@ import static org.mockito.Matchers.any;
   @Mock AffirmRequest.Callback<CheckoutResponse> callback;
   @Mock OkHttpClient okHttpClient;
   @Mock Call call;
+  @Mock Tracker tracker;
 
   @Captor ArgumentCaptor<Request> requestArgumentCaptor;
 
   private Gson gson;
 
   @Before public void setup() {
-    AffirmInjector component = new AffirmInjector();
+    AffirmInjector component = new AffirmInjector.Builder().setEnv(Affirm.Environment.PRODUCTION)
+        .setMerchantKey("111")
+        .build();
     gson = component.provideGson();
   }
 
@@ -57,7 +60,8 @@ import static org.mockito.Matchers.any;
     AffirmRequest.Endpoint endpoint =
         new CheckoutEndpoint(MerchantFactory.create(), checkout, gson);
     AffirmRequest<CheckoutResponse> affirmRequest =
-        new AffirmRequest(CheckoutResponse.class, "api.affirm.com", okHttpClient, gson, endpoint);
+        new AffirmRequest(CheckoutResponse.class, "api.affirm.com", okHttpClient, gson, endpoint,
+            tracker);
 
     affirmRequest.create(callback);
 

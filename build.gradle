@@ -1,17 +1,19 @@
 buildscript {
   repositories {
+    google()
     jcenter()
     maven {
       url 'https://registry.affirm-stage.com/artifactory/plugins-release'
     }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.3'
+    classpath 'com.android.tools.build:gradle:3.0.0-alpha4'
   }
 }
 
 allprojects {
   repositories {
+    google()
     mavenCentral()
   }
 }

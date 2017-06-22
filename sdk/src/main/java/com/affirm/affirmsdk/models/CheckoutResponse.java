@@ -12,4 +12,13 @@ import com.google.gson.annotations.SerializedName;
     return new AutoValue_CheckoutResponse.GsonTypeAdapter(gson);
   }
 
+  public static CheckoutResponse.Builder builder() {
+    return new AutoValue_CheckoutResponse.Builder();
+  }
+
+  @AutoValue.Builder public abstract static class Builder {
+    public abstract CheckoutResponse.Builder setRedirectUrl(String value);
+
+    public abstract CheckoutResponse build();
+  }
 }

@@ -12,6 +12,7 @@ android {
     versionName "1.0"
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
   }
   buildTypes {
     release {
@@ -30,8 +31,8 @@ android {
 }
 
 dependencies {
-  compile 'com.android.support:appcompat-v7:25.2.0'
-  compile project (':sdk')
+  compile 'com.android.support:appcompat-v7:25.4.0'
+  compile project(':sdk')
 
   compile "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
   compile "com.google.code.gson:gson:$GSON_VERSION"

@@ -2,6 +2,7 @@ package com.affirm.affirmsdk.utils;
 
 import com.affirm.affirmsdk.models.Address;
 import com.affirm.affirmsdk.models.Checkout;
+import com.affirm.affirmsdk.models.CheckoutResponse;
 import com.affirm.affirmsdk.models.Item;
 import com.affirm.affirmsdk.models.Name;
 import com.affirm.affirmsdk.models.Shipping;

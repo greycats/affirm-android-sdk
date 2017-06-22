@@ -7,42 +7,7 @@
     <Class name="~.*\.Manifest\$.*"/>
   </Match>
   <Match>
-    <Class name="com.dotthespot.app.services.LocationService"/>
     <Bug code="ST"/>
+    <Class name="com.affirm.affirmsdk.di.AffirmInjector"/>
   </Match>
-  <Match>
-    <Class name="com.dotthespot.app.services.GestureDetectorService"/>
-    <Bug code="ST"/>
-  </Match>
-  <Match>
-    <Class name="com.dotthespot.app.services.BluetoothLeService"/>
-    <Bug code="ST"/>
-  </Match>
-  <Match>
-    <Class name="com.dotthespot.app.utils.VenueFormatter"/>
-    <Bug code="ST"/>
-  </Match>
-  <Match>
-    <Class name="com.dotthespot.app.utils.BluetoothHelper"/>
-    <Bug code="MS"/>
-  </Match>
-  <Match>
-    <Class name="com.dotthespot.app.gesture.FIR"/>
-    <Bug code="EI2"/>
-  </Match>
-  <Match>
-    <Class name="com.dotthespot.app.gesture.Constants"/>
-    <Bug code="MS"/>
-  </Match>
-  <!--<Match>-->
-  <!--<Class name="com.samsungaccelerator.team9.memodot.GestureDetectorService"/>-->
-  <!--</Match>-->
-  <!--<Match>-->
-  <!--<Class name="com.samsungaccelerator.team9.phoneactions.PhoneActionsService"/>-->
-  <!--<Bug code="ST"/>-->
-  <!--</Match>-->
-  <!--<Match>-->
-  <!--<Bug pattern="UUF_UNUSED_FIELD"/>-->
-  <!--<Field name="~ajc\$.*"/>-->
-  <!--</Match>-->
 </FindBugsFilter>

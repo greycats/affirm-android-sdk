@@ -3,16 +3,19 @@ package com.affirm.affirmsdk;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.TextView;
 import com.affirm.affirmsdk.di.AffirmInjector;
 import com.affirm.affirmsdk.models.Checkout;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.affirm.affirmsdk.ModalActivity.ModalType.PRODUCT;
+import static com.affirm.affirmsdk.ModalActivity.ModalType.SITE;
 
 public final class Affirm {
   private static final int CHECKOUT_REQUEST = 8076;
-  //private static final String TAG = Affirm.class.getCanonicalName();
+  private static volatile Affirm instance;
   private String merchant;
   private Environment environment;
   private String name;
@@ -27,48 +30,71 @@ public final class Affirm {
     void onAffirmCheckoutSuccess(String token);
   }
 
+  public enum Environment {
+    SANDBOX("sandbox.affirm.com", "cdn1-sandbox.affirm.com", "tracker.affirm.com"),
+    PRODUCTION("api-cf.affirm.com", "cdn1.affirm.com", "tracker.affirm.com");
+
+    final String baseUrl1;
+    final String baseUrl2;
+    final String kibanaBaseUrl;
+
+    Environment(String baseUrl1, String baseUrl2, String kibanaBaseUrl) {
+      this.baseUrl1 = baseUrl1;
+      this.baseUrl2 = baseUrl2;
+      this.kibanaBaseUrl = kibanaBaseUrl;
+    }
+
+    @Override public String toString() {
+      return "Environment{" + baseUrl1 + ", " + baseUrl2 + ", " + kibanaBaseUrl + '}';
+    }
+  }
+
   private Affirm(String merchant, Environment environment, String name) {
     this.merchant = merchant;
     this.environment = environment;
     this.name = name;
 
-    component = new AffirmInjector();
+    component = new AffirmInjector.Builder().setEnv(environment).setMerchantKey(merchant).build();
+
+    synchronized (Affirm.class) {
+      if (instance != null) {
+        throw new IllegalStateException("Affirm instance already exist");
+      }
+      instance = this;
+    }
   }
 
-  public static Builder builder() {
-    return new Builder();
+  /**
+   * Gets Current Affirm instance
+   */
+  public static @Nullable Affirm getInstance() {
+    return instance;
   }
 
-  public void launchCheckout(@NonNull Activity activity, @NonNull Checkout checkout) {
-    CheckoutActivity.launchCheckout(activity, CHECKOUT_REQUEST, merchant, checkout,
-        environment.baseUrl1, name);
-  }
-
+  /**
+   * Launches Product Modal Activity
+   */
   public void launchProductModal(@NonNull Activity activity, float amount, String modalId) {
-    ModalActivity.launch(activity, merchant, amount, environment.baseUrl1, true, modalId);
+    ModalActivity.launch(activity, merchant, amount, environment.baseUrl1, PRODUCT, modalId);
   }
 
+  /**
+   * Launches Site Modal Activity
+   */
   public void launchSiteModal(@NonNull Activity activity, String modalId) {
-    ModalActivity.launch(activity, merchant, 0f, environment.baseUrl1, false, modalId);
+    ModalActivity.launch(activity, merchant, 0f, environment.baseUrl1, SITE, modalId);
   }
 
-  public enum Environment {
-    SANDBOX("sandbox.affirm.com", "cdn1-sandbox.affirm.com"),
-    PRODUCTION("api-cf.affirm.com", "cdn1.affirm.com");
-
-    private final String baseUrl1;
-    private final String baseUrl2;
-
-    Environment(String baseUrl1, String baseUrl2) {
-      this.baseUrl1 = baseUrl1;
-      this.baseUrl2 = baseUrl2;
-    }
-
-    @Override public String toString() {
-      return "Environment{" + baseUrl1 + ", " + baseUrl2 + '}';
-    }
+  /**
+   * Launches a CheckoutActivity. Don't forget to call onActivityResult to get the processed result
+   */
+  public void launchCheckout(@NonNull Activity activity, @NonNull Checkout checkout) {
+    CheckoutActivity.launchCheckout(activity, CHECKOUT_REQUEST, merchant, checkout, name);
   }
 
+  /**
+   * Helper method to get the Result from the launched CheckoutActivity
+   */
   public boolean onActivityResult(CheckoutCallbacks callbacks, int requestCode, int resultCode,
       Intent data) {
     if (requestCode != CHECKOUT_REQUEST) {
@@ -91,16 +117,28 @@ public final class Affirm {
     return true;
   }
 
+  /**
+   * Starts a job that will write the as low as span (text and logo) on a TextView
+   *
+   * @param amount (Float) eg 112.02 as $112 and ¢2
+   */
   public CancellableRequest writePromoToTextView(@NonNull TextView textView,
       @NonNull String promoId, float amount, @NonNull AffirmLogoType logoType,
       @NonNull AffirmColor affirmColor, @NonNull PromoCallback promoCallback) {
 
-    final PromoJob promoJob =
-        new PromoJob(component, merchant, environment.baseUrl2, textView, promoId, amount, logoType,
-            affirmColor, promoCallback);
+    final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
+        component.provideTracking(), merchant, environment.baseUrl2, textView, promoId, amount,
+        logoType, affirmColor, promoCallback);
     return promoJob.getPromo();
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /**
+   * Affirm Builder.
+   */
   public static final class Builder {
     private String publicKey;
     private Environment environment = Environment.SANDBOX;

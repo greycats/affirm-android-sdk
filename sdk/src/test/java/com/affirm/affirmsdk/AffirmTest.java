@@ -2,35 +2,30 @@ package com.affirm.affirmsdk;
 
 import android.app.Activity;
 import android.content.Intent;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 
 public class AffirmTest {
 
   Affirm affirm;
 
   @Before public void setup() {
-    affirm = Affirm.builder().setMerchantPublicKey("sdf").build();
-  }
-
-  @Test public void builder() throws Exception {
-    Affirm.Builder builder =
-        Affirm.builder().setMerchantPublicKey("sdf");
-    builder.build();
-  }
-
-  @Test public void builder_PublicKey_NotPassed() throws Exception {
-    Affirm.Builder builder = Affirm.builder();
-
-    try {
-      builder.build();
-      Assert.fail("Should have thrown exception");
-    } catch (IllegalArgumentException e) {
+    if (Affirm.getInstance() == null) {
+      Affirm.builder().setMerchantPublicKey("sdf").build();
     }
+
+    affirm = Affirm.getInstance();
+  }
+
+  @Test(expected = IllegalStateException.class) public void builder_FailsWhenInstanceExists()
+      throws Exception {
+    Affirm.builder().setMerchantPublicKey("sdf").build();
+  }
+
+  @Test(expected = IllegalArgumentException.class) public void builder_PublicKey_NotPassed()
+      throws Exception {
+    Affirm.builder().build();
   }
 
   @Test public void onActivityResult_Success() {

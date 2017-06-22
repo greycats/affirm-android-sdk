@@ -14,6 +14,7 @@ public class ResponseFactory {
   public static <T> Response success(String body) {
     return new Response.Builder().code(200)
         .message("OK")
+        .addHeader("X-Affirm-Request-Id", "requestId")
         .protocol(Protocol.HTTP_1_1)
         .body(responseBody(body))
         .request(new Request.Builder().url("http://localhost/").build())
@@ -23,6 +24,7 @@ public class ResponseFactory {
   public static Response error(int code, String body) {
     return new okhttp3.Response.Builder().message("")
         .code(code)
+        .addHeader("X-Affirm-Request-Id", "requestId")
         .protocol(Protocol.HTTP_1_1)
         .body(responseBody(body))
         .request(new Request.Builder().url("http://localhost/").build())

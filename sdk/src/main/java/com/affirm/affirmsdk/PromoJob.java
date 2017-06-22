@@ -2,7 +2,6 @@ package com.affirm.affirmsdk;
 
 import android.text.SpannableString;
 import android.widget.TextView;
-import com.affirm.affirmsdk.di.AffirmInjector;
 import com.affirm.affirmsdk.models.PricingResponse;
 import com.affirm.affirmsdk.models.PromoResponse;
 import com.google.gson.Gson;
@@ -19,14 +18,15 @@ class PromoJob {
   private final AffirmColor affirmColor;
   private final PromoCallback callback;
   private final Gson gson;
-  private final OkHttpClient okHttpClient;
+  private final OkHttpClient client;
+  private final Tracker tracker;
 
   private AffirmRequest currentRequest;
   private boolean isCancelled = false;
 
-  public PromoJob(AffirmInjector component, String publicKey, String baseUrl, TextView textView,
-      String promoId, float amount, AffirmLogoType logoType, AffirmColor affirmColor,
-      PromoCallback callback) {
+  PromoJob(Gson gson, OkHttpClient client, Tracker tracker, String publicKey, String baseUrl,
+      TextView textView, String promoId, float amount, AffirmLogoType logoType,
+      AffirmColor affirmColor, PromoCallback callback) {
     this.baseUrl = baseUrl;
     this.textView = textView;
     this.publicKey = publicKey;
@@ -35,15 +35,16 @@ class PromoJob {
     this.logoType = logoType;
     this.affirmColor = affirmColor;
     this.callback = callback;
-    this.gson = component.provideGson();
-    this.okHttpClient = component.provideOkHttpClient();
+    this.gson = gson;
+    this.client = client;
+    this.tracker = tracker;
   }
 
   CancellableRequest getPromo() {
 
     final AffirmRequest.Endpoint endpoint = new PromoEndpoint(promoId, publicKey);
     currentRequest =
-        new AffirmRequest<>(PromoResponse.class, baseUrl, okHttpClient, gson, endpoint);
+        new AffirmRequest<>(PromoResponse.class, baseUrl, client, gson, endpoint, tracker);
 
     currentRequest.create(new AffirmRequest.Callback<PromoResponse>() {
       @Override public void onSuccess(PromoResponse result) {
@@ -71,7 +72,7 @@ class PromoJob {
 
     final AffirmRequest.Endpoint endpoint = new PricingEndpoint(publicKey, amount, promoResponse);
     currentRequest =
-        new AffirmRequest<>(PricingResponse.class, baseUrl, okHttpClient, gson, endpoint);
+        new AffirmRequest<>(PricingResponse.class, baseUrl, client, gson, endpoint, tracker);
 
     currentRequest.create(new AffirmRequest.Callback<PricingResponse>() {
       @Override public void onSuccess(PricingResponse result) {

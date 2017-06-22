@@ -12,4 +12,8 @@ public class ServerError extends Exception {
   public ErrorResponse getErrorResponse() {
     return errorResponse;
   }
+
+  @Override public String toString() {
+    return getErrorResponse().toString();
+  }
 }
