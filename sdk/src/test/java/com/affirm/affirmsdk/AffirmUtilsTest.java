@@ -17,6 +17,7 @@ public class AffirmUtilsTest {
     Map<String, String> map = ImmutableMap.of("money", "55", "name", "jan", "day", "monday");
     String text = "I paid {{money}} to {{name}} last {{day}}";
 
-    Truth.assertThat(AffirmUtils.replacePlaceholders(text, map)).contains("I paid 55 to jan last monday");
+    Truth.assertThat(AffirmUtils.replacePlaceholders(text, map))
+        .contains("I paid 55 to jan last monday");
   }
 }

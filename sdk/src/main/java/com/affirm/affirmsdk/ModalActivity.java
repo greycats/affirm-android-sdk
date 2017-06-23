@@ -1,11 +1,12 @@
 package com.affirm.affirmsdk;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
 import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
@@ -31,6 +32,7 @@ public class ModalActivity extends AppCompatActivity implements AffirmWebViewCli
   private static final String API_KEY = "API_KEY";
   private static final String JAVASCRIPT = "JAVASCRIPT";
   private static final String CANCEL_URL = "CANCEL_URL";
+  private static final String MODAL_ID = "MODAL_ID";
 
   private WebView webView;
   private ProgressIndicator progressIndicator;
@@ -54,10 +56,10 @@ public class ModalActivity extends AppCompatActivity implements AffirmWebViewCli
     }
   }
 
-  static void launch(@NonNull Activity activity, @NonNull String apiKey, float amount,
-      @NonNull String baseUrl, ModalType type, String modalId) {
+  static void launch(@NonNull Context context, @NonNull String apiKey, float amount,
+      @NonNull String baseUrl, ModalType type, @Nullable String modalId) {
 
-    final Intent intent = new Intent(activity, ModalActivity.class);
+    final Intent intent = new Intent(context, ModalActivity.class);
     final String stringAmount = String.valueOf(AffirmUtils.decimalDollarsToIntegerCents(amount));
     final String fullPath = PROTOCOL + baseUrl + JS_PATH;
 
@@ -66,12 +68,13 @@ public class ModalActivity extends AppCompatActivity implements AffirmWebViewCli
     map.put(API_KEY, apiKey);
     map.put(JAVASCRIPT, fullPath);
     map.put(CANCEL_URL, AffirmWebViewClient.AFFIRM_CANCELLATION_URL);
+    map.put(MODAL_ID, modalId == null ? "" : modalId);
 
     intent.putExtra(BASE_URL_EXTRA, baseUrl);
     intent.putExtra(TYPE_EXTRA, type);
     intent.putExtra(MAP_EXTRA, map);
 
-    activity.startActivity(intent);
+    context.startActivity(intent);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {

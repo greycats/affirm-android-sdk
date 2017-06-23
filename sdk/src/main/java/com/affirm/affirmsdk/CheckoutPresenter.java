@@ -44,24 +44,32 @@ public class CheckoutPresenter implements Presentable<CheckoutPresenter.Interfac
 
   void onWebViewError(@NonNull Throwable error) {
     tracker.track(CHECKOUT_WEBVIEW_FAIL, ERROR, null);
-    page.finishWithError(error.toString());
+    if (page != null) {
+      page.finishWithError(error.toString());
+    }
   }
 
   void onWebViewConfirmation(@NonNull String token) {
     tracker.track(CHECKOUT_WEBVIEW_SUCCESS, INFO, null);
-    page.finishWithSuccess(token);
+    if (page != null) {
+      page.finishWithSuccess(token);
+    }
   }
 
   private void startCheckout() {
     checkoutRequest.create(new AffirmRequest.Callback<CheckoutResponse>() {
       @Override public void onFailure(Throwable throwable) {
         tracker.track(CHECKOUT_CREATION_FAIL, ERROR, null);
-        page.finishWithError(throwable.getMessage());
+        if (page != null) {
+          page.finishWithError(throwable.getMessage());
+        }
       }
 
       @Override public void onSuccess(final CheckoutResponse result) {
         tracker.track(CHECKOUT_CREATION_SUCCESS, INFO, null);
-        page.loadWebView(result.redirectUrl());
+        if (page != null) {
+          page.loadWebView(result.redirectUrl());
+        }
       }
     });
   }

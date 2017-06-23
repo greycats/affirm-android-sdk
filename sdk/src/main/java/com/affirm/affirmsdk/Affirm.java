@@ -1,9 +1,11 @@
 package com.affirm.affirmsdk;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.TextView;
 import com.affirm.affirmsdk.di.AffirmInjector;
 import com.affirm.affirmsdk.models.Checkout;
@@ -74,15 +76,15 @@ public final class Affirm {
   /**
    * Launches Product Modal Activity
    */
-  public void launchProductModal(@NonNull Activity activity, float amount, String modalId) {
-    ModalActivity.launch(activity, merchant, amount, environment.baseUrl1, PRODUCT, modalId);
+  public void launchProductModal(@NonNull Context context, float amount, @Nullable String modalId) {
+    ModalActivity.launch(context, merchant, amount, environment.baseUrl1, PRODUCT, modalId);
   }
 
   /**
    * Launches Site Modal Activity
    */
-  public void launchSiteModal(@NonNull Activity activity, String modalId) {
-    ModalActivity.launch(activity, merchant, 0f, environment.baseUrl1, SITE, modalId);
+  public void launchSiteModal(@NonNull Context context, @Nullable String modalId) {
+    ModalActivity.launch(context, merchant, 0f, environment.baseUrl1, SITE, modalId);
   }
 
   /**
@@ -122,9 +124,15 @@ public final class Affirm {
    *
    * @param amount (Float) eg 112.02 as $112 and ¢2
    */
-  public CancellableRequest writePromoToTextView(@NonNull TextView textView,
-      @NonNull String promoId, float amount, @NonNull AffirmLogoType logoType,
+  public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
+      @NonNull String promoId, final float amount, @NonNull AffirmLogoType logoType,
       @NonNull AffirmColor affirmColor, @NonNull PromoCallback promoCallback) {
+
+    textView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        launchProductModal(textView.getContext(), amount, null);
+      }
+    });
 
     final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
         component.provideTracking(), merchant, environment.baseUrl2, textView, promoId, amount,

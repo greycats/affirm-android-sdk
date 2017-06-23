@@ -70,17 +70,11 @@ public class MainActivity extends AppCompatActivity implements Affirm.CheckoutCa
               }
 
               @Override public void onFailure(TextView textView, Throwable throwable) {
-                Toast.makeText(MainActivity.this, "Checkout token: " + throwable.getMessage(),
+                Toast.makeText(MainActivity.this, "As low as label : " + throwable.getMessage(),
                     Toast.LENGTH_LONG).show();
                 aslowasPromo = null;
               }
             });
-
-    promo.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        affirm.launchProductModal(MainActivity.this, 1100, "0Q97G0Z4Y4TLGHGB");
-      }
-    });
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
