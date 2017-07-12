@@ -6,14 +6,18 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public final class AffirmWebViewClient extends WebViewClient {
+public abstract class AffirmWebViewClient extends WebViewClient {
   public static final String AFFIRM_CONFIRMATION_URL = "affirm://checkout/confirmed";
   public static final String AFFIRM_CANCELLATION_URL = "affirm://checkout/cancelled";
 
-  private Callbacks callbacks;
+  private final Callbacks callbacks;
 
   public AffirmWebViewClient(@NonNull Callbacks callbacks) {
     this.callbacks = callbacks;
+  }
+
+  public Callbacks getCallbacks() {
+    return callbacks;
   }
 
   @Override public void onPageFinished(WebView view, String url) {
@@ -22,17 +26,19 @@ public final class AffirmWebViewClient extends WebViewClient {
   }
 
   @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-    if (url.contains(AFFIRM_CONFIRMATION_URL)) {
-      final String token = url.split("checkout_token=")[1];
-      callbacks.onWebViewConfirmation(token);
-      return true;
-    } else if (url.contains(AFFIRM_CANCELLATION_URL)) {
+    if (url.contains(AFFIRM_CANCELLATION_URL)) {
       callbacks.onWebViewCancellation();
       return true;
     }
 
-    return false;
+    if (hasCallbackUrl(view, url)) {
+      return true;
+    }
+
+    return !url.startsWith("http");
   }
+
+  abstract boolean hasCallbackUrl(WebView view, String url);
 
   @Override
   public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
@@ -40,11 +46,9 @@ public final class AffirmWebViewClient extends WebViewClient {
   }
 
   public interface Callbacks {
-    void onWebViewConfirmation(@NonNull String checkoutToken);
+    void onWebViewError(@NonNull Throwable error);
 
     void onWebViewCancellation();
-
-    void onWebViewError(@NonNull Throwable error);
 
     void onWebViewPageLoaded();
   }

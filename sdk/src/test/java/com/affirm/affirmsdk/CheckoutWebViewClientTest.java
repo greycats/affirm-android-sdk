@@ -14,12 +14,12 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) public class AffirmWebViewClientTest {
+@RunWith(MockitoJUnitRunner.class) public class CheckoutWebViewClientTest {
 
-  @Mock AffirmWebViewClient.Callbacks callbacks;
+  @Mock CheckoutWebViewClient.Callbacks callbacks;
   @Mock WebView webview;
 
-  @InjectMocks AffirmWebViewClient affirmWebViewClient;
+  @InjectMocks CheckoutWebViewClient affirmWebViewClient;
 
   @Test public void shouldOverrideUrlLoading_Confirmation() {
     affirmWebViewClient.shouldOverrideUrlLoading(webview,

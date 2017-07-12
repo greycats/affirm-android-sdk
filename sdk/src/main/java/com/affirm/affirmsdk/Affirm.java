@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 import com.affirm.affirmsdk.di.AffirmInjector;
+import com.affirm.affirmsdk.models.CardDetails;
 import com.affirm.affirmsdk.models.Checkout;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -17,6 +18,7 @@ import static com.affirm.affirmsdk.ModalActivity.ModalType.SITE;
 
 public final class Affirm {
   private static final int CHECKOUT_REQUEST = 8076;
+  private static final int VCN_CHECKOUT_REQUEST = 8077;
   private static volatile Affirm instance;
   private String merchant;
   private Environment environment;
@@ -25,11 +27,19 @@ public final class Affirm {
   private final AffirmInjector component;
 
   public interface CheckoutCallbacks {
-    void onAffirmCheckoutError(String message);
+    void onAffirmCheckoutError(@Nullable String message);
 
     void onAffirmCheckoutCancelled();
 
-    void onAffirmCheckoutSuccess(String token);
+    void onAffirmCheckoutSuccess(@NonNull String token);
+  }
+
+  public interface VcnCheckoutCallbacks {
+    void onAffirmVcnCheckoutError(@Nullable String message);
+
+    void onAffirmVcnCheckoutCancelled();
+
+    void onAffirmVcnCheckoutSuccess(@NonNull CardDetails cardDetails);
   }
 
   public enum Environment {
@@ -95,28 +105,63 @@ public final class Affirm {
   }
 
   /**
+   * Launches a VcnCheckoutActivity. Don't forget to call onActivityResult to get the processed
+   * result
+   */
+  public void launchVcnCheckout(@NonNull Activity activity, @NonNull Checkout checkout) {
+    VcnCheckoutActivity.launchCheckout(activity, VCN_CHECKOUT_REQUEST, merchant, checkout, name);
+  }
+
+  /**
    * Helper method to get the Result from the launched CheckoutActivity
    */
-  public boolean onActivityResult(CheckoutCallbacks callbacks, int requestCode, int resultCode,
-      Intent data) {
-    if (requestCode != CHECKOUT_REQUEST) {
-      return false;
+  public boolean onCheckoutActivityResult(CheckoutCallbacks callbacks, int requestCode,
+      int resultCode, Intent data) {
+    if (requestCode == CHECKOUT_REQUEST) {
+      switch (resultCode) {
+        case RESULT_OK:
+          callbacks.onAffirmCheckoutSuccess(data.getStringExtra(CheckoutActivity.CHECKOUT_TOKEN));
+          break;
+        case RESULT_CANCELED:
+          callbacks.onAffirmCheckoutCancelled();
+          break;
+        case CheckoutActivity.RESULT_ERROR:
+          callbacks.onAffirmCheckoutError(data.getStringExtra(CheckoutActivity.CHECKOUT_ERROR));
+          break;
+        default:
+      }
+
+      return true;
     }
 
-    switch (resultCode) {
-      case RESULT_OK:
-        callbacks.onAffirmCheckoutSuccess(data.getStringExtra(CheckoutActivity.CHECKOUT_TOKEN));
-        break;
-      case RESULT_CANCELED:
-        callbacks.onAffirmCheckoutCancelled();
-        break;
-      case CheckoutActivity.RESULT_ERROR:
-        callbacks.onAffirmCheckoutError(data.getStringExtra(CheckoutActivity.CHECKOUT_ERROR));
-        break;
-      default:
+    return false;
+  }
+
+  /**
+   * Helper method to get the Result from the launched VcnCheckoutActivity
+   */
+  public boolean onVcnCheckoutActivityResult(VcnCheckoutCallbacks callbacks, int requestCode,
+      int resultCode, Intent data) {
+    if (requestCode == VCN_CHECKOUT_REQUEST) {
+      switch (resultCode) {
+        case RESULT_OK:
+          callbacks.onAffirmVcnCheckoutSuccess(
+              (CardDetails) data.getParcelableExtra(VcnCheckoutActivity.CREDIT_DETAILS));
+          break;
+        case RESULT_CANCELED:
+          callbacks.onAffirmVcnCheckoutCancelled();
+          break;
+        case CheckoutActivity.RESULT_ERROR:
+          callbacks.onAffirmVcnCheckoutError(
+              data.getStringExtra(VcnCheckoutActivity.CHECKOUT_ERROR));
+          break;
+        default:
+      }
+
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   /**

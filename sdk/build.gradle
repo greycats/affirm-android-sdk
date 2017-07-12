@@ -5,7 +5,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'maven-publish'
 
 def packageName = 'com.affirm'
-def libraryVersion = '0.3.0'
+def libraryVersion = '0.3.3'
 
 android {
   compileSdkVersion 25
@@ -109,6 +109,7 @@ dependencies {
   testCompile "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
   testCompile "com.google.code.gson:gson:$GSON_VERSION"
   testCompile "com.squareup.okhttp3:mockwebserver:$OK_HTTP_VERSION"
+  implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
 publishing {

@@ -40,10 +40,20 @@
       />
 
   <Button
+      android:id="@+id/vcnCheckout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/checkout"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="16dp"
+      android:text="VCN Checkout"
+      />
+
+  <Button
       android:id="@+id/siteModalButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_below="@id/checkout"
+      android:layout_below="@id/vcnCheckout"
       android:layout_centerHorizontal="true"
       android:layout_marginTop="16dp"
       android:text="Launch Site Modal"

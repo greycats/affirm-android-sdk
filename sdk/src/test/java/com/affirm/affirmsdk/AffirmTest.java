@@ -35,7 +35,7 @@ public class AffirmTest {
 
     Mockito.when(intent.getStringExtra(Mockito.any(String.class))).thenReturn("1234");
 
-    affirm.onActivityResult(callbacks, 8076, Activity.RESULT_OK, intent);
+    affirm.onCheckoutActivityResult(callbacks, 8076, Activity.RESULT_OK, intent);
 
     Mockito.verify(callbacks).onAffirmCheckoutSuccess("1234");
   }
@@ -43,7 +43,7 @@ public class AffirmTest {
   @Test public void onActivityResult_Cancelled() {
     Affirm.CheckoutCallbacks callbacks = Mockito.mock(Affirm.CheckoutCallbacks.class);
 
-    affirm.onActivityResult(callbacks, 8076, Activity.RESULT_CANCELED, Mockito.mock(Intent.class));
+    affirm.onCheckoutActivityResult(callbacks, 8076, Activity.RESULT_CANCELED, Mockito.mock(Intent.class));
 
     Mockito.verify(callbacks).onAffirmCheckoutCancelled();
   }
@@ -55,7 +55,7 @@ public class AffirmTest {
 
     Mockito.when(intent.getStringExtra(Mockito.any(String.class))).thenReturn("error");
 
-    affirm.onActivityResult(callbacks, 8076, CheckoutActivity.RESULT_ERROR, intent);
+    affirm.onCheckoutActivityResult(callbacks, 8076, CheckoutActivity.RESULT_ERROR, intent);
 
     Mockito.verify(callbacks).onAffirmCheckoutError("error");
   }

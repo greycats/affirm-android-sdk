@@ -1,6 +1,10 @@
 package com.affirm.affirmsdk;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.webkit.WebView;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,5 +48,12 @@ public final class AffirmUtils {
     }
 
     return text;
+  }
+
+  static void debuggableWebView(@NonNull Context context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+        && 0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
+      WebView.setWebContentsDebuggingEnabled(true);
+    }
   }
 }

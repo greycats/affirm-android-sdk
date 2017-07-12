@@ -18,11 +18,13 @@ import com.google.gson.annotations.SerializedName;
 
   @SerializedName("public_api_key") public abstract String publicApiKey();
 
-  @SerializedName("user_confirmation_url") public abstract String confirmationUrl();
+  @Nullable @SerializedName("user_confirmation_url") public abstract String confirmationUrl();
 
-  @SerializedName("user_cancel_url") public abstract String cancelUrl();
+  @Nullable @SerializedName("user_cancel_url") public abstract String cancelUrl();
 
   @Nullable @SerializedName("name") public abstract String name();
+
+  @Nullable @SerializedName("use_vcn") public abstract Boolean useVcn();
 
   @AutoValue.Builder public abstract static class Builder {
     public abstract Builder setPublicApiKey(String value);
@@ -32,6 +34,8 @@ import com.google.gson.annotations.SerializedName;
     public abstract Builder setCancelUrl(String value);
 
     public abstract Builder setName(String value);
+
+    public abstract Builder setUseVcn(Boolean value);
 
     public abstract Merchant build();
   }

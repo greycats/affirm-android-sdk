@@ -2,16 +2,14 @@ package com.affirm.affirmsdk;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.WebView;
 import com.affirm.affirmsdk.di.AffirmInjector;
-import com.affirm.affirmsdk.views.ProgressIndicator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -20,7 +18,8 @@ import static com.affirm.affirmsdk.Tracker.TrackingEvent.PRODUCT_WEBVIEW_FAIL;
 import static com.affirm.affirmsdk.Tracker.TrackingEvent.SITE_WEBVIEW_FAIL;
 import static com.affirm.affirmsdk.Tracker.TrackingLevel.ERROR;
 
-public class ModalActivity extends AppCompatActivity implements AffirmWebViewClient.Callbacks {
+public class ModalActivity extends AppCompatActivity
+    implements AffirmWebViewClient.Callbacks, PopUpWebChromeClient.Callbacks {
   private static final String MAP_EXTRA = "MAP_EXTRA";
   private static final String TYPE_EXTRA = "TYPE_EXTRA";
   private static final String BASE_URL_EXTRA = "BASE_URL_EXTRA";
@@ -35,7 +34,7 @@ public class ModalActivity extends AppCompatActivity implements AffirmWebViewCli
   private static final String MODAL_ID = "MODAL_ID";
 
   private WebView webView;
-  private ProgressIndicator progressIndicator;
+  private View progressIndicator;
   private ModalType type;
   private HashMap<String, String> map;
   private String baseUrlExtra;
@@ -43,8 +42,8 @@ public class ModalActivity extends AppCompatActivity implements AffirmWebViewCli
 
   enum ModalType {
     // @formatter:off
-    PRODUCT(R.raw.product_modal_template, PRODUCT_WEBVIEW_FAIL),
-    SITE(R.raw.site_modal_template, SITE_WEBVIEW_FAIL);
+    PRODUCT(R.raw.modal_template, PRODUCT_WEBVIEW_FAIL),
+    SITE(R.raw.modal_template, SITE_WEBVIEW_FAIL);
     // @formatter:on
 
     @RawRes final int templateRes;
@@ -95,7 +94,7 @@ public class ModalActivity extends AppCompatActivity implements AffirmWebViewCli
 
     setContentView(R.layout.activity_product);
     webView = (WebView) findViewById(R.id.webview);
-    progressIndicator = (ProgressIndicator) findViewById(R.id.progressIndicator);
+    progressIndicator = (View) findViewById(R.id.progressIndicator);
 
     setupWebview();
 
@@ -110,16 +109,14 @@ public class ModalActivity extends AppCompatActivity implements AffirmWebViewCli
   }
 
   private void setupWebview() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && 0 != (getApplicationInfo().flags
-        & ApplicationInfo.FLAG_DEBUGGABLE)) {
-      WebView.setWebContentsDebuggingEnabled(true);
-    }
-    webView.setWebViewClient(new AffirmWebViewClient(this));
+    AffirmUtils.debuggableWebView(this);
+    webView.clearCache(true);
+    webView.setWebViewClient(new ModalWebViewClient(this));
     webView.getSettings().setJavaScriptEnabled(true);
     webView.getSettings().setDomStorageEnabled(true);
     webView.getSettings().setSupportMultipleWindows(true);
     webView.setVerticalScrollBarEnabled(false);
-    webView.setWebChromeClient(new PopUpWebChromeClient());
+    webView.setWebChromeClient(new PopUpWebChromeClient(this));
   }
 
   private String initialHtml() {
@@ -143,17 +140,19 @@ public class ModalActivity extends AppCompatActivity implements AffirmWebViewCli
     finish();
   }
 
-  @Override public void onWebViewConfirmation(@NonNull String checkoutToken) {
-    finish();
-  }
-
   @Override public void onWebViewError(@NonNull Throwable error) {
     tracker.track(type.failureEvent, ERROR, null);
     finish();
   }
 
   @Override public void onWebViewPageLoaded() {
-    progressIndicator.hideAnimated();
+
+  }
+
+  // -- PopUpWebChromeClient.Callbacks
+
+  @Override public void chromeLoadCompleted() {
+    progressIndicator.setVisibility(View.GONE);
   }
 }
 

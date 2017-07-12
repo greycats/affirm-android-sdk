@@ -54,7 +54,8 @@ import static org.mockito.Mockito.when;
             + "\"event_name\":\"network error\",\"app_id\":\"Android SDK\",\"release\":\""
             + BuildConfig.VERSION_NAME
             + "\",\"android_sdk\":0,\"device_name\":null,"
-            + "\"merchant_key\":\"111\",\"level\":\"error\"}");
+            + "\"merchant_key\":\"111\",\"level\":\"error\","
+            + "\"environment\":\"sandbox\"}");
 
     Mockito.verify(call).enqueue(any(Callback.class));
   }
