@@ -80,10 +80,6 @@ public final class CheckoutActivity extends AppCompatActivity
   private void setupWebview() {
     AffirmUtils.debuggableWebView(this);
     webView.setWebViewClient(new CheckoutWebViewClient(this));
-    webView.getSettings().setJavaScriptEnabled(true);
-    webView.getSettings().setDomStorageEnabled(true);
-    webView.getSettings().setSupportMultipleWindows(true);
-    webView.setVerticalScrollBarEnabled(false);
     webView.setWebChromeClient(new PopUpWebChromeClient(this));
   }
 

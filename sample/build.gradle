@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-  compileSdkVersion 25
+  compileSdkVersion 26
   buildToolsVersion "25.0.2"
 
   defaultConfig {
     applicationId "com.example.sample"
-    minSdkVersion 15
-    targetSdkVersion 25
+    minSdkVersion 19
+    targetSdkVersion 26
     versionCode 1
     versionName "1.0"
 
@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-  compile 'com.android.support:appcompat-v7:25.4.0'
+  compile 'com.android.support:appcompat-v7:26+'
   compile project(':sdk')
 
   compile "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"

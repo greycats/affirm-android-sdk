@@ -5,10 +5,10 @@ apply plugin: 'checkstyle'
 apply plugin: 'maven-publish'
 
 def packageName = 'com.affirm'
-def libraryVersion = '0.3.3'
+def libraryVersion = '1.0.0'
 
 android {
-  compileSdkVersion 25
+  compileSdkVersion 26
   buildToolsVersion "25.0.2"
 
   compileOptions {
@@ -17,8 +17,8 @@ android {
   }
 
   defaultConfig {
-    minSdkVersion 15
-    targetSdkVersion 25
+    minSdkVersion 19
+    targetSdkVersion 26
     versionCode 1
     versionName libraryVersion
 

@@ -110,12 +110,7 @@ public class ModalActivity extends AppCompatActivity
 
   private void setupWebview() {
     AffirmUtils.debuggableWebView(this);
-    webView.clearCache(true);
     webView.setWebViewClient(new ModalWebViewClient(this));
-    webView.getSettings().setJavaScriptEnabled(true);
-    webView.getSettings().setDomStorageEnabled(true);
-    webView.getSettings().setSupportMultipleWindows(true);
-    webView.setVerticalScrollBarEnabled(false);
     webView.setWebChromeClient(new PopUpWebChromeClient(this));
   }
 

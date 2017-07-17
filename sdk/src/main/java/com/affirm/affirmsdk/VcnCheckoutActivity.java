@@ -86,11 +86,6 @@ public class VcnCheckoutActivity extends AppCompatActivity
     AffirmUtils.debuggableWebView(this);
     webView.setWebViewClient(
         new VcnCheckoutWebViewClient(AffirmInjector.instance().provideGson(), this));
-    webView.getSettings().setJavaScriptEnabled(true);
-    webView.getSettings().setDomStorageEnabled(true);
-    webView.getSettings().setSupportMultipleWindows(true);
-    webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-    webView.setVerticalScrollBarEnabled(false);
     webView.setWebChromeClient(new PopUpWebChromeClient(this));
     clearCookies();
   }
