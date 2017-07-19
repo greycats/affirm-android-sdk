@@ -5,11 +5,11 @@ apply plugin: 'checkstyle'
 apply plugin: 'maven-publish'
 
 def packageName = 'com.affirm'
-def libraryVersion = '1.0.0'
+def libraryVersion = '1.0.1'
 
 android {
   compileSdkVersion 26
-  buildToolsVersion "25.0.2"
+  buildToolsVersion "26.0.0"
 
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_7
@@ -87,7 +87,7 @@ task findbugsWrapper(dependsOn: 'findbugs') {}
 task pmdWrapper(dependsOn: 'pmd') {}
 task checkstyleWrapper(dependsOn: 'checkstyle') {}
 
-check.dependsOn findbugsWrapper
+build.dependsOn findbugsWrapper
 check.dependsOn pmdWrapper
 check.dependsOn checkstyleWrapper
 
@@ -95,8 +95,8 @@ dependencies {
 
   compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
 
-  provided "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
-  provided "com.google.code.gson:gson:$GSON_VERSION"
+  compile "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
+  compile "com.google.code.gson:gson:$GSON_VERSION"
 
   annotationProcessor "com.ryanharter.auto.value:auto-value-gson:$AUTOVALUE_VERSION"
   compileOnly "com.ryanharter.auto.value:auto-value-gson:$AUTOVALUE_VERSION"
@@ -109,7 +109,6 @@ dependencies {
   testCompile "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
   testCompile "com.google.code.gson:gson:$GSON_VERSION"
   testCompile "com.squareup.okhttp3:mockwebserver:$OK_HTTP_VERSION"
-  implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
 publishing {
@@ -137,7 +136,7 @@ publishing {
         def dependenciesNode = asNode().appendNode('dependencies')
 
         // Iterate over the 'compile' dependencies
-        configurations.provided.allDependencies.each {
+        configurations.compile.allDependencies.each {
           def dependencyNode = dependenciesNode.appendNode('dependency')
           dependencyNode.appendNode('groupId', it.group)
           dependencyNode.appendNode('artifactId', it.name)

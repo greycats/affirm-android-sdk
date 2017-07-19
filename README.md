@@ -3,7 +3,30 @@ Affirm Android SDK
 
 Easily integrate Affirm checkouts on merchant's native apps
 
-## Usage
+## Download
+
+```groovy
+allprojects {
+  repositories {
+    maven {
+      url 'https://github.com/Affirm/affirm-android-sdk-lib/raw/master/releases'
+    }
+```
+
+```groovy
+compile "com.affirm:affirm-android-sdk:1.0.1"
+```
+
+## Min SDK
+
+The minimum sdk is 19. If your app supports lower versions you will have to add this to your manifest
+
+```xml
+<uses-sdk android:targetSdkVersion="your-target-version" android:minSdkVersion="your-min-sdk-version"
+      tools:overrideLibrary="com.affirm.affirmsdk"/>
+```
+
+## Basic Usage
 Start by creating an affirm instance.
 
 ```java
