@@ -37,7 +37,6 @@ public class CheckoutPresenter implements Presentable<CheckoutPresenter.Interfac
   }
 
   @Override public void onDetach() {
-    tracker.track(CHECKOUT_WEBVIEW_FAIL, ERROR, null);
     checkoutRequest.cancel();
     page = null;
   }

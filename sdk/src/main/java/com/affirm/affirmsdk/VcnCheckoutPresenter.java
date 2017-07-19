@@ -38,7 +38,6 @@ public class VcnCheckoutPresenter implements Presentable<VcnCheckoutPresenter.In
   }
 
   @Override public void onDetach() {
-    tracker.track(VCN_CHECKOUT_WEBVIEW_FAIL, ERROR, null);
     checkoutRequest.cancel();
     page = null;
   }
