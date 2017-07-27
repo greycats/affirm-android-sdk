@@ -12,3 +12,4 @@ jacoco.exec
 
 .DS_Store
 
+sdk/gradle.properties

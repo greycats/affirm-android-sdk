@@ -30,9 +30,6 @@ android {
 }
 
 dependencies {
-  compile 'com.android.support:appcompat-v7:26+'
-  compile project(':sdk')
-
-  compile "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
-  compile "com.google.code.gson:gson:$GSON_VERSION"
+  implementation 'com.android.support:appcompat-v7:26.0.0'
+  implementation project(':sdk')
 }
