@@ -2,6 +2,7 @@ package com.affirm.affirmsdk;
 
 import android.text.SpannableString;
 import android.widget.TextView;
+import com.affirm.affirmsdk.models.NewPromoResponse;
 import com.affirm.affirmsdk.models.PricingResponse;
 import com.affirm.affirmsdk.models.PromoResponse;
 import com.google.gson.Gson;
@@ -41,22 +42,11 @@ class PromoJob {
   }
 
   CancellableRequest getPromo() {
-
-    final AffirmRequest.Endpoint endpoint = new PromoEndpoint(promoId, publicKey);
-    currentRequest =
-        new AffirmRequest<>(PromoResponse.class, baseUrl, client, gson, endpoint, tracker);
-
-    currentRequest.create(new AffirmRequest.Callback<PromoResponse>() {
-      @Override public void onSuccess(PromoResponse result) {
-        if (!isCancelled) {
-          getPricing(result);
-        }
-      }
-
-      @Override public void onFailure(Throwable throwable) {
-        returnError(throwable);
-      }
-    });
+    if (promoId.startsWith("promo_set")) {
+      getNewPromoResponse();
+    } else {
+      getPromoResponse();
+    }
 
     return new CancellableRequest() {
       @Override public void cancelRequest() {
@@ -68,13 +58,52 @@ class PromoJob {
     };
   }
 
+  private void getPromoResponse() {
+    final AffirmRequest.Endpoint endpoint = new PromoEndpoint(promoId, publicKey);
+    final AffirmRequest<PromoResponse> request =
+        new AffirmRequest<>(PromoResponse.class, baseUrl, client, gson, endpoint, tracker);
+    currentRequest = request;
+
+    request.create(new AffirmRequest.Callback<PromoResponse>() {
+      @Override public void onSuccess(PromoResponse result) {
+        if (!isCancelled) {
+          getPricing(result);
+        }
+      }
+
+      @Override public void onFailure(Throwable throwable) {
+        returnError(throwable);
+      }
+    });
+  }
+
+  private void getNewPromoResponse() {
+    final AffirmRequest.Endpoint endpoint = new NewPromoEndpoint(promoId, publicKey);
+    final AffirmRequest<NewPromoResponse> request =
+        new AffirmRequest<>(NewPromoResponse.class, baseUrl, client, gson, endpoint, tracker);
+    currentRequest = request;
+
+    request.create(new AffirmRequest.Callback<NewPromoResponse>() {
+      @Override public void onSuccess(NewPromoResponse result) {
+        if (!isCancelled) {
+          getPricing(result.toPromoResponse(AffirmUtils.decimalDollarsToIntegerCents(amount)));
+        }
+      }
+
+      @Override public void onFailure(Throwable throwable) {
+        returnError(throwable);
+      }
+    });
+  }
+
   private void getPricing(final PromoResponse promoResponse) {
 
     final AffirmRequest.Endpoint endpoint = new PricingEndpoint(publicKey, amount, promoResponse);
-    currentRequest =
+    final AffirmRequest<PricingResponse> request =
         new AffirmRequest<>(PricingResponse.class, baseUrl, client, gson, endpoint, tracker);
+    currentRequest = request;
 
-    currentRequest.create(new AffirmRequest.Callback<PricingResponse>() {
+    request.create(new AffirmRequest.Callback<PricingResponse>() {
       @Override public void onSuccess(PricingResponse result) {
         updateSpan(promoResponse, result);
 
