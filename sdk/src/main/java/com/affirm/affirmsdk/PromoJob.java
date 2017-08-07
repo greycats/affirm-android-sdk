@@ -128,7 +128,7 @@ class PromoJob {
     final PromoSpannable promoSpannable = new PromoSpannable();
     final SpannableString spannableString =
         promoSpannable.spannableFromEditText(textView, promoResponse.pricingTemplate(),
-            pricingResponse.paymentString(), logoType, affirmColor);
+            "$" + pricingResponse.paymentString(), logoType, affirmColor);
 
     textView.post(new Runnable() {
       @Override public void run() {
