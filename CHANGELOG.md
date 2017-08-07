@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.4 *(2017-07-19)*
+----------------------------
+
+  * Add dollar symbol to amount in as low as label
+
 Version 1.0.3 *(2017-07-19)*
 ----------------------------
 

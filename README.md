@@ -7,7 +7,7 @@ Easily integrate Affirm checkouts on merchant's native apps
 
 Download via Gradle:
 ```groovy
-compile "com.affirm:affirm-android-sdk:1.0.3"
+compile "com.affirm:affirm-android-sdk:1.0.4"
 ```
 or Maven:
 ```xml
@@ -17,7 +17,7 @@ or Maven:
   <version>1.0.3</version>
 </dependency>
 ```
-Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
+Snapshots of the development version are available in [Sonatype's `snapshots` repository](https://oss.sonatype.org/content/repositories/snapshots/).
 
 ## Min SDK
 
