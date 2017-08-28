@@ -9,11 +9,11 @@ public class ServerError extends Exception {
     this.errorResponse = errorResponse;
   }
 
-  public ErrorResponse getErrorResponse() {
-    return errorResponse;
+  @Override public String getMessage() {
+    return errorResponse.message();
   }
 
   @Override public String toString() {
-    return getErrorResponse().toString();
+    return errorResponse.toString();
   }
 }
