@@ -8,8 +8,8 @@ def packageName = project.GROUP
 def libraryVersion = project.VERSION_NAME
 
 android {
-  compileSdkVersion 26
-  buildToolsVersion "26.0.0"
+  compileSdkVersion 27
+  buildToolsVersion "27.0.0"
 
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_7
@@ -18,7 +18,7 @@ android {
 
   defaultConfig {
     minSdkVersion 19
-    targetSdkVersion 26
+    targetSdkVersion 27
     versionCode VERSION_CODE.toInteger()
     versionName libraryVersion
 
@@ -104,8 +104,8 @@ dependencies {
 
   testImplementation 'com.google.truth:truth:0.28'
   testImplementation 'junit:junit:4.12'
-  testImplementation 'org.robolectric:robolectric:3.3.2'
-  testImplementation 'org.mockito:mockito-core:2.8.9'
+  testImplementation 'org.robolectric:robolectric:3.5.1'
+  testImplementation 'org.mockito:mockito-core:2.10.0'
   testImplementation "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
   testImplementation "com.google.code.gson:gson:$GSON_VERSION"
   testImplementation "com.squareup.okhttp3:mockwebserver:$OK_HTTP_VERSION"
