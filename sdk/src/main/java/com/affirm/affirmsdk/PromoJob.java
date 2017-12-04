@@ -1,22 +1,30 @@
 package com.affirm.affirmsdk;
 
+import android.content.Context;
+import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.widget.TextView;
 import com.affirm.affirmsdk.models.NewPromoResponse;
 import com.affirm.affirmsdk.models.PricingResponse;
 import com.affirm.affirmsdk.models.PromoResponse;
 import com.google.gson.Gson;
+
+import java.lang.reflect.Type;
+
 import okhttp3.OkHttpClient;
 
 class PromoJob {
 
   private final String baseUrl;
-  private final TextView textView;
   private final String publicKey;
   private final String promoId;
   private final float amount;
+  private final float textSize;
+  private final Typeface typeface;
   private final AffirmLogoType logoType;
   private final AffirmColor affirmColor;
+  private final Context context;
   private final PromoCallback callback;
   private final Gson gson;
   private final OkHttpClient client;
@@ -26,10 +34,11 @@ class PromoJob {
   private boolean isCancelled = false;
 
   PromoJob(Gson gson, OkHttpClient client, Tracker tracker, String publicKey, String baseUrl,
-      TextView textView, String promoId, float amount, AffirmLogoType logoType,
-      AffirmColor affirmColor, PromoCallback callback) {
+           float textSize, Typeface typeface, String promoId, float amount, AffirmLogoType logoType,
+           AffirmColor affirmColor, Context context, PromoCallback callback) {
     this.baseUrl = baseUrl;
-    this.textView = textView;
+    this.textSize = textSize;
+    this.typeface = typeface;
     this.publicKey = publicKey;
     this.promoId = promoId;
     this.amount = amount;
@@ -39,6 +48,7 @@ class PromoJob {
     this.gson = gson;
     this.client = client;
     this.tracker = tracker;
+    this.context = context;
   }
 
   CancellableRequest getPromo() {
@@ -105,9 +115,7 @@ class PromoJob {
 
     request.create(new AffirmRequest.Callback<PricingResponse>() {
       @Override public void onSuccess(PricingResponse result) {
-        updateSpan(promoResponse, result);
-
-        callback.onPromoWritten(textView);
+        callback.onPromoWritten(updateSpan(promoResponse, result));
       }
 
       @Override public void onFailure(Throwable throwable) {
@@ -117,23 +125,13 @@ class PromoJob {
   }
 
   private void returnError(final Throwable e) {
-    textView.post(new Runnable() {
-      @Override public void run() {
-        callback.onFailure(textView, e);
-      }
-    });
+    callback.onFailure(e);
   }
 
-  private void updateSpan(PromoResponse promoResponse, PricingResponse pricingResponse) {
+  private SpannableString updateSpan(PromoResponse promoResponse, PricingResponse pricingResponse) {
     final PromoSpannable promoSpannable = new PromoSpannable();
-    final SpannableString spannableString =
-        promoSpannable.spannableFromEditText(textView, promoResponse.pricingTemplate(),
-            "$" + pricingResponse.paymentString(), logoType, affirmColor);
 
-    textView.post(new Runnable() {
-      @Override public void run() {
-        textView.setText(spannableString);
-      }
-    });
+    return promoSpannable.spannableFromEditText(promoResponse.pricingTemplate(),
+            "$" + pricingResponse.paymentString(), textSize, typeface, logoType, affirmColor, context);
   }
 }

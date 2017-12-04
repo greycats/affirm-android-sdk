@@ -1,8 +1,8 @@
 package com.affirm.affirmsdk;
 
-import android.widget.TextView;
+import android.text.SpannableString;
 
 public interface PromoCallback {
-  void onPromoWritten(TextView textView);
-  void onFailure(TextView textView, Throwable throwable);
+  void onPromoWritten(SpannableString editable);
+  void onFailure(Throwable throwable);
 }

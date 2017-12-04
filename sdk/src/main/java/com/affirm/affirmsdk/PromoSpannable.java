@@ -1,5 +1,6 @@
 package com.affirm.affirmsdk;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -11,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
-import android.widget.TextView;
 
 import static com.affirm.affirmsdk.AffirmLogoType.AffirmDisplayTypeText;
 
@@ -38,7 +38,7 @@ public class PromoSpannable {
     return imageSpan;
   }
 
-  private SpannableString getSpannable(@NonNull String template, float textSize,
+  public SpannableString getSpannable(@NonNull String template, float textSize,
       @Nullable Drawable logoDrawable, @NonNull Typeface typeface, @Nullable int color) {
 
     paint.setTextSize(textSize);
@@ -62,10 +62,12 @@ public class PromoSpannable {
     return spannableString;
   }
 
-  public SpannableString spannableFromEditText(@NonNull TextView textView, @NonNull String template,
-      @NonNull String payment, @NonNull AffirmLogoType logoType, @NonNull AffirmColor affirmColor) {
+  public SpannableString spannableFromEditText(@NonNull String template, @NonNull String payment,
+                                               @NonNull float textSize, @NonNull Typeface typeface,
+                                               @NonNull AffirmLogoType logoType,
+                                               @NonNull AffirmColor affirmColor, @NonNull Context context) {
 
-    Resources resources = textView.getContext().getResources();
+    Resources resources = context.getResources();
 
     Drawable logoDrawable = null;
     if (logoType != AffirmDisplayTypeText) {
@@ -76,7 +78,6 @@ public class PromoSpannable {
 
     template = template.replace(PAYMENT_PLACEHOLDER, payment);
 
-    return getSpannable(template, textView.getTextSize(), logoDrawable, textView.getTypeface(),
-        color);
+    return getSpannable(template, textSize, logoDrawable, typeface, color);
   }
 }

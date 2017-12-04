@@ -3,6 +3,7 @@ package com.affirm.affirmsdk;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -169,19 +170,16 @@ public final class Affirm {
    *
    * @param amount (Float) eg 112.02 as $112 and ¢2
    */
-  public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
-      @NonNull String promoId, final float amount, @NonNull AffirmLogoType logoType,
-      @NonNull AffirmColor affirmColor, @NonNull PromoCallback promoCallback) {
-
-    textView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        launchProductModal(textView.getContext(), amount, null);
-      }
-    });
+  public CancellableRequest writePromoToTextView(@NonNull String promoId, final float amount,
+                                                 float textSize, Typeface typeface,
+                                                 @NonNull AffirmLogoType logoType,
+                                                 @NonNull AffirmColor affirmColor,
+                                                 @NonNull Context context,
+                                                 @NonNull PromoCallback promoCallback) {
 
     final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
-        component.provideTracking(), merchant, environment.baseUrl2, textView, promoId, amount,
-        logoType, affirmColor, promoCallback);
+        component.provideTracking(), merchant, environment.baseUrl2, textSize, typeface, promoId, amount,
+        logoType, affirmColor, context, promoCallback);
     return promoJob.getPromo();
   }
 
