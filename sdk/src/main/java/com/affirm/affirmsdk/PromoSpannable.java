@@ -1,5 +1,6 @@
 package com.affirm.affirmsdk;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -38,7 +39,7 @@ public class PromoSpannable {
     return imageSpan;
   }
 
-  private SpannableString getSpannable(@NonNull String template, float textSize,
+  public SpannableString getSpannable(@NonNull String template, float textSize,
       @Nullable Drawable logoDrawable, @NonNull Typeface typeface, @Nullable int color) {
 
     paint.setTextSize(textSize);
@@ -62,6 +63,25 @@ public class PromoSpannable {
     return spannableString;
   }
 
+  public SpannableString spannableFromEditText(@NonNull String template, @NonNull String payment,
+      @NonNull float textSize, @NonNull Typeface typeface, @NonNull AffirmLogoType logoType,
+      @NonNull AffirmColor affirmColor, @NonNull Context context) {
+
+    Resources resources = context.getResources();
+
+    Drawable logoDrawable = null;
+    if (logoType != AffirmDisplayTypeText) {
+      logoDrawable = resources.getDrawable(logoType.getDrawableRes());
+    }
+
+    int color = resources.getColor(affirmColor.getColorRes());
+
+    template = template.replace(PAYMENT_PLACEHOLDER, payment);
+
+    return getSpannable(template, textSize, logoDrawable, typeface, color);
+  }
+
+  @Deprecated
   public SpannableString spannableFromEditText(@NonNull TextView textView, @NonNull String template,
       @NonNull String payment, @NonNull AffirmLogoType logoType, @NonNull AffirmColor affirmColor) {
 

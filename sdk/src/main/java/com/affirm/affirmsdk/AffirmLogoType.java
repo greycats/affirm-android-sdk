@@ -6,7 +6,7 @@ public enum AffirmLogoType {
   AffirmDisplayTypeLogo, AffirmDisplayTypeText, AffirmDisplayTypeSymbol,
   AffirmDisplayTypeSymbolHollow;
 
-  @DrawableRes int getDrawableRes() {
+  public @DrawableRes int getDrawableRes() {
     switch (this) {
       case AffirmDisplayTypeLogo:
         return R.drawable.black_logo_transparent_bg;

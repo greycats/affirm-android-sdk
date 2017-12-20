@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.affirm.affirmsdk.Affirm;
 import com.affirm.affirmsdk.CancellableRequest;
 import com.affirm.affirmsdk.PromoCallback;
+import com.affirm.affirmsdk.SpannablePromoCallback;
 import com.affirm.affirmsdk.models.Address;
 import com.affirm.affirmsdk.models.CardDetails;
 import com.affirm.affirmsdk.models.Checkout;
@@ -21,8 +23,10 @@ import com.affirm.affirmsdk.models.Shipping;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.affirm.affirmsdk.AffirmColor.AffirmColorTypeBlack;
 import static com.affirm.affirmsdk.AffirmColor.AffirmColorTypeBlue;
 import static com.affirm.affirmsdk.AffirmLogoType.AffirmDisplayTypeLogo;
+import static com.affirm.affirmsdk.AffirmLogoType.AffirmDisplayTypeSymbol;
 
 public class MainActivity extends AppCompatActivity
     implements Affirm.CheckoutCallbacks, Affirm.VcnCheckoutCallbacks {
@@ -31,19 +35,22 @@ public class MainActivity extends AppCompatActivity
   private Button siteModalButton;
   private Button productModalButton;
   private TextView promo;
+  private TextView promo2;
 
   private Affirm affirm;
   private CancellableRequest aslowasPromo;
+  private CancellableRequest aslowasPromo2;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    checkout = (Button) findViewById(R.id.checkout);
-    vcnCheckout = (Button) findViewById(R.id.vcnCheckout);
-    siteModalButton = (Button) findViewById(R.id.siteModalButton);
-    productModalButton = (Button) findViewById(R.id.productModalButton);
-    promo = (TextView) findViewById(R.id.promo);
+    checkout = findViewById(R.id.checkout);
+    vcnCheckout = findViewById(R.id.vcnCheckout);
+    siteModalButton = findViewById(R.id.siteModalButton);
+    productModalButton = findViewById(R.id.productModalButton);
+    promo = findViewById(R.id.promo);
+    promo2 = findViewById(R.id.promo2);
 
     affirm = Affirm.getInstance();
 
@@ -84,6 +91,25 @@ public class MainActivity extends AppCompatActivity
                 aslowasPromo = null;
               }
             });
+
+    aslowasPromo2 = affirm.writePromoToTextView("SFCRL4VYS0C78607", 500f, promo2.getTextSize(),
+        promo2.getTypeface(), AffirmDisplayTypeSymbol, AffirmColorTypeBlack, this,
+        new SpannablePromoCallback() {
+          @Override public void onPromoWritten(final SpannableString editable) {
+            promo2.post(new Runnable() {
+              @Override public void run() {
+                promo2.setText(editable);
+              }
+            });
+            aslowasPromo2 = null;
+          }
+
+          @Override public void onFailure(Throwable throwable) {
+            Toast.makeText(MainActivity.this, "As low as label : " + throwable.getMessage(),
+                Toast.LENGTH_LONG).show();
+            aslowasPromo = null;
+          }
+        });
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

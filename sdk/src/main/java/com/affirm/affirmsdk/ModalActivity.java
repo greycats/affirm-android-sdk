@@ -9,7 +9,9 @@ import android.support.annotation.RawRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebView;
+
 import com.affirm.affirmsdk.di.AffirmInjector;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -92,9 +94,9 @@ public class ModalActivity extends AppCompatActivity
       baseUrlExtra = getIntent().getStringExtra(BASE_URL_EXTRA);
     }
 
-    setContentView(R.layout.activity_product);
-    webView = (WebView) findViewById(R.id.webview);
-    progressIndicator = (View) findViewById(R.id.progressIndicator);
+    setContentView(R.layout.activity_checkout);
+    webView = findViewById(R.id.webview);
+    progressIndicator = findViewById(R.id.progressIndicator);
 
     setupWebview();
 
