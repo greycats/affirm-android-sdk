@@ -183,6 +183,30 @@ public final class Affirm {
     return promoJob.getPromo();
   }
 
+  /**
+   * DEPRECATED - use the above method
+   *
+   * Starts a job that will write the as low as span (text and logo) on a TextView
+   *
+   * @param amount (Float) eg 112.02 as $112 and ¢2
+   */
+  @Deprecated
+  public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
+                                                 @NonNull String promoId, final float amount, @NonNull AffirmLogoType logoType,
+                                                 @NonNull AffirmColor affirmColor, @NonNull PromoCallback promoCallback) {
+
+    textView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        launchProductModal(textView.getContext(), amount, null);
+      }
+    });
+
+    final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
+            component.provideTracking(), merchant, environment.baseUrl2, textView, promoId, amount,
+            logoType, affirmColor, promoCallback);
+    return promoJob.getPromo();
+  }
+
   public static Builder builder() {
     return new Builder();
   }

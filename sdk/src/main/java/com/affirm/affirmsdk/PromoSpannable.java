@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.widget.TextView;
 
 import static com.affirm.affirmsdk.AffirmLogoType.AffirmDisplayTypeText;
 
@@ -79,5 +80,24 @@ public class PromoSpannable {
     template = template.replace(PAYMENT_PLACEHOLDER, payment);
 
     return getSpannable(template, textSize, logoDrawable, typeface, color);
+  }
+
+  @Deprecated
+  public SpannableString spannableFromEditText(@NonNull TextView textView, @NonNull String template,
+                                               @NonNull String payment, @NonNull AffirmLogoType logoType, @NonNull AffirmColor affirmColor) {
+
+    Resources resources = textView.getContext().getResources();
+
+    Drawable logoDrawable = null;
+    if (logoType != AffirmDisplayTypeText) {
+      logoDrawable = resources.getDrawable(logoType.getDrawableRes());
+    }
+
+    int color = resources.getColor(affirmColor.getColorRes());
+
+    template = template.replace(PAYMENT_PLACEHOLDER, payment);
+
+    return getSpannable(template, textView.getTextSize(), logoDrawable, textView.getTypeface(),
+            color);
   }
 }
