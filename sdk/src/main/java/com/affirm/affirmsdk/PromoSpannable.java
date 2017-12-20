@@ -64,9 +64,8 @@ public class PromoSpannable {
   }
 
   public SpannableString spannableFromEditText(@NonNull String template, @NonNull String payment,
-                                               @NonNull float textSize, @NonNull Typeface typeface,
-                                               @NonNull AffirmLogoType logoType,
-                                               @NonNull AffirmColor affirmColor, @NonNull Context context) {
+      @NonNull float textSize, @NonNull Typeface typeface, @NonNull AffirmLogoType logoType,
+      @NonNull AffirmColor affirmColor, @NonNull Context context) {
 
     Resources resources = context.getResources();
 
@@ -84,7 +83,7 @@ public class PromoSpannable {
 
   @Deprecated
   public SpannableString spannableFromEditText(@NonNull TextView textView, @NonNull String template,
-                                               @NonNull String payment, @NonNull AffirmLogoType logoType, @NonNull AffirmColor affirmColor) {
+      @NonNull String payment, @NonNull AffirmLogoType logoType, @NonNull AffirmColor affirmColor) {
 
     Resources resources = textView.getContext().getResources();
 
@@ -98,6 +97,6 @@ public class PromoSpannable {
     template = template.replace(PAYMENT_PLACEHOLDER, payment);
 
     return getSpannable(template, textView.getTextSize(), logoDrawable, textView.getTypeface(),
-            color);
+        color);
   }
 }

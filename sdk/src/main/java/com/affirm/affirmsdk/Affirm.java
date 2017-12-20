@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.TextView;
 import com.affirm.affirmsdk.di.AffirmInjector;
@@ -171,15 +172,13 @@ public final class Affirm {
    * @param amount (Float) eg 112.02 as $112 and ¢2
    */
   public CancellableRequest writePromoToTextView(@NonNull String promoId, final float amount,
-                                                 float textSize, Typeface typeface,
-                                                 @NonNull AffirmLogoType logoType,
-                                                 @NonNull AffirmColor affirmColor,
-                                                 @NonNull Context context,
-                                                 @NonNull PromoCallback promoCallback) {
+      float textSize, Typeface typeface, @NonNull AffirmLogoType logoType,
+      @NonNull AffirmColor affirmColor, @NonNull Context context,
+      @NonNull SpannablePromoCallback promoCallback) {
 
     final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
-        component.provideTracking(), merchant, environment.baseUrl2, textSize, typeface, promoId, amount,
-        logoType, affirmColor, context, promoCallback);
+        component.provideTracking(), merchant, environment.baseUrl2, textSize, typeface, promoId,
+        amount, logoType, affirmColor, context, promoCallback);
     return promoJob.getPromo();
   }
 
@@ -190,10 +189,9 @@ public final class Affirm {
    *
    * @param amount (Float) eg 112.02 as $112 and ¢2
    */
-  @Deprecated
-  public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
-                                                 @NonNull String promoId, final float amount, @NonNull AffirmLogoType logoType,
-                                                 @NonNull AffirmColor affirmColor, @NonNull PromoCallback promoCallback) {
+  @Deprecated public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
+      @NonNull String promoId, final float amount, @NonNull AffirmLogoType logoType,
+      @NonNull AffirmColor affirmColor, @NonNull final PromoCallback promoCallback) {
 
     textView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -201,9 +199,25 @@ public final class Affirm {
       }
     });
 
+    final SpannablePromoCallback spannablePromoCallback = new SpannablePromoCallback() {
+      @Override public void onFailure(Throwable throwable) {
+        promoCallback.onFailure(textView, throwable);
+      }
+
+      @Override public void onPromoWritten(final SpannableString editable) {
+        textView.post(new Runnable() {
+          @Override public void run() {
+            textView.setText(editable);
+            promoCallback.onPromoWritten(textView);
+          }
+        });
+      }
+    };
+
     final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
-            component.provideTracking(), merchant, environment.baseUrl2, textView, promoId, amount,
-            logoType, affirmColor, promoCallback);
+        component.provideTracking(), merchant, environment.baseUrl2, textView.getTextSize(),
+        textView.getTypeface(), promoId, amount, logoType, affirmColor, textView.getContext(),
+        spannablePromoCallback);
     return promoJob.getPromo();
   }
 
