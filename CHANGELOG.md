@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.7 *(2017-12-20)*
+----------------------------
+
+  * Add new preferred version of `writePromoToTextView` that returns a SpannableString
+
 Version 1.0.6 *(2017-11-14)*
 ----------------------------
 
