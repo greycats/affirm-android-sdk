@@ -1,10 +1,17 @@
 Change Log
 ==========
 
+Version 1.0.8 *(2018-01-04)*
+----------------------------
+
+  * Reupload 1.0.7 to Maven Central
+
 Version 1.0.7 *(2017-12-20)*
 ----------------------------
 
-  * Add new preferred version of `writePromoToTextView` that returns a SpannableString
+  * ~~Add new preferred version of `writePromoToTextView` that returns a SpannableString~~
+
+This version was uploaded to maven central without the aar file
 
 Version 1.0.6 *(2017-11-14)*
 ----------------------------

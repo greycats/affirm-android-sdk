@@ -31,5 +31,7 @@ android {
 
 dependencies {
   implementation 'com.android.support:appcompat-v7:27.0.1'
+
   implementation project(':sdk')
+//  implementation 'com.affirm:affirm-android-sdk:1.0.8'
 }
