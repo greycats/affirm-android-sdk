@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.10 *(2018-08-03)*
+----------------------------
+
+  * Add metadata info to checkout request
+  * Upgrade gradle and okHttp versions
+
 Version 1.0.8 *(2018-01-04)*
 ----------------------------
 
