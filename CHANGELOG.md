@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.11 *(2018-11-12)*
+----------------------------
+
+  * SDK is now able to identify and replace apr placeholders for Promos
+  * Upgrade gradle
+
 Version 1.0.10 *(2018-08-03)*
 ----------------------------
 
