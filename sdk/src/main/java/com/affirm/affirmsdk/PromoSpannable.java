@@ -19,6 +19,7 @@ import static com.affirm.affirmsdk.AffirmLogoType.AffirmDisplayTypeText;
 public class PromoSpannable {
   private static final String LOGO_PLACEHOLDER = "{affirm_logo}";
   private static final String PAYMENT_PLACEHOLDER = "{payment}";
+  private static final String APR_PLACEHOLDER = "{lowest_apr}";
   private final Paint paint;
 
   public PromoSpannable() {
@@ -64,7 +65,7 @@ public class PromoSpannable {
   }
 
   public SpannableString spannableFromEditText(@NonNull String template, @NonNull String payment,
-      @NonNull float textSize, @NonNull Typeface typeface, @NonNull AffirmLogoType logoType,
+      float apr, float textSize, @NonNull Typeface typeface, @NonNull AffirmLogoType logoType,
       @NonNull AffirmColor affirmColor, @NonNull Context context) {
 
     Resources resources = context.getResources();
@@ -77,6 +78,8 @@ public class PromoSpannable {
     int color = resources.getColor(affirmColor.getColorRes());
 
     template = template.replace(PAYMENT_PLACEHOLDER, payment);
+
+    template = template.replace(APR_PLACEHOLDER, String.valueOf(apr));
 
     return getSpannable(template, textSize, logoDrawable, typeface, color);
   }

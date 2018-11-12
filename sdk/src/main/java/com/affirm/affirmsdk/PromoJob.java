@@ -126,6 +126,7 @@ class PromoJob {
   private SpannableString updateSpan(PromoResponse promoResponse, PricingResponse pricingResponse) {
     final PromoSpannable promoSpannable = new PromoSpannable();
     return promoSpannable.spannableFromEditText(promoResponse.pricingTemplate(),
-        "$" + pricingResponse.paymentString(), textSize, typeface, logoType, affirmColor, context);
+        "$" + pricingResponse.paymentString(), promoResponse.apr(), textSize, typeface, logoType,
+        affirmColor, context);
   }
 }
