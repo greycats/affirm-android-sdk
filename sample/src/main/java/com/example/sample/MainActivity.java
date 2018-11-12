@@ -85,10 +85,14 @@ public class MainActivity extends AppCompatActivity
                 aslowasPromo = null;
               }
 
-              @Override public void onFailure(TextView textView, Throwable throwable) {
-                Toast.makeText(MainActivity.this, "As low as label : " + throwable.getMessage(),
-                    Toast.LENGTH_LONG).show();
-                aslowasPromo = null;
+              @Override public void onFailure(TextView textView, final Throwable throwable) {
+                runOnUiThread(new Runnable() {
+                  @Override public void run() {
+                    Toast.makeText(MainActivity.this, "As low as label : " + throwable.getMessage(),
+                        Toast.LENGTH_LONG).show();
+                    aslowasPromo = null;
+                  }
+                });
               }
             });
 
@@ -104,10 +108,14 @@ public class MainActivity extends AppCompatActivity
             aslowasPromo2 = null;
           }
 
-          @Override public void onFailure(Throwable throwable) {
-            Toast.makeText(MainActivity.this, "As low as label : " + throwable.getMessage(),
-                Toast.LENGTH_LONG).show();
-            aslowasPromo = null;
+          @Override public void onFailure(final Throwable throwable) {
+            runOnUiThread(new Runnable() {
+              @Override public void run() {
+                Toast.makeText(MainActivity.this, "As low as label : " + throwable.getMessage(),
+                    Toast.LENGTH_LONG).show();
+                aslowasPromo = null;
+              }
+            });
           }
         });
   }
