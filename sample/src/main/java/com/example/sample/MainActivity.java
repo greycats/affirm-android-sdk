@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
     });
 
     aslowasPromo =
-        affirm.writePromoToTextView(promo, "SFCRL4VYS0C78607", 144.5f, AffirmDisplayTypeLogo,
+        affirm.writePromoToTextView(promo, "SFCRL4VYS0C78607", 1100, AffirmDisplayTypeLogo,
             AffirmColorTypeBlue, new PromoCallback() {
               @Override public void onPromoWritten(TextView textView) {
                 aslowasPromo = null;
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
               }
             });
 
-    aslowasPromo2 = affirm.writePromoToTextView("SFCRL4VYS0C78607", 500f, promo2.getTextSize(),
+    aslowasPromo2 = affirm.writePromoToTextView("SFCRL4VYS0C78607", 1100, promo2.getTextSize(),
         promo2.getTypeface(), AffirmDisplayTypeSymbol, AffirmColorTypeBlack, this,
         new SpannablePromoCallback() {
           @Override public void onPromoWritten(final SpannableString editable) {
