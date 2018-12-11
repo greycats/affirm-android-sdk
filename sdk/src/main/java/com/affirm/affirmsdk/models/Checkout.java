@@ -25,7 +25,7 @@ import java.util.Map;
 
   public abstract Shipping shipping();
 
-  public abstract Shipping billing();
+  @Nullable public abstract Shipping billing();
 
   @SerializedName("shipping_amount") public abstract Integer shippingAmount();
 
