@@ -17,8 +17,8 @@ final class PromoEndpoint implements Endpoint {
 
   @Override public String getPath() {
     return String.format(
-        "/api/promos/v2/%s?field=ala&amount=%d&page_type=product&promo_external_id=%s", publicKey,
-        centAmount, promoId);
+        "/api/promos/v2/%s?is_sdk=true&field=ala&amount=%d&page_type=product&promo_external_id=%s",
+        publicKey, centAmount, promoId);
   }
 
   @Override public Request completeBuilder(Request.Builder builder) {
