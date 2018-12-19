@@ -34,4 +34,5 @@ dependencies {
 
   implementation project(':sdk')
 //  implementation 'com.affirm:affirm-android-sdk:1.0.8'
+//  implementation 'com.affirm:affirm-android-sdk:1.0.12.1-SNAPSHOT'
 }
