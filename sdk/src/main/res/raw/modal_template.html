@@ -65,6 +65,7 @@
             var onCloseProductModal = function() {
                 window.location.href = "{{CANCEL_URL}}"
             }
+            affirm.events.on('prequal:close', onCloseProductModal);
             affirm.setAffirmConfig(elem, {onCloseModal: onCloseProductModal});
         });
         // END AFFIRM.JS EMBED CODE
