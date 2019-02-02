@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.0.12.1 *(2019-02-1)*
+-----------------------------
+  * Make billing address optional
+  * Affirm new logo
+  * Faster promos
+  * Fix close product modal
+
 Version 1.0.11 *(2018-11-12)*
 ----------------------------
 
