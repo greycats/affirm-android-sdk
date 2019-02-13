@@ -67,7 +67,8 @@ class PromoJob {
     request.create(new AffirmRequest.Callback<PromoResponse>() {
       @Override public void onSuccess(PromoResponse result) {
         if (!isCancelled) {
-          callback.onPromoWritten(updateSpan(result.promo().ala()));
+          boolean showPrequal = !result.promo().promoConfig().promoStyle().equals("fast");
+          callback.onPromoWritten(updateSpan(result.promo().ala()), showPrequal);
         }
       }
 

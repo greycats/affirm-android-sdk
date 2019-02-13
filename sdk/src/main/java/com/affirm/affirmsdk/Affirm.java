@@ -188,23 +188,32 @@ public final class Affirm {
    * @param amount (Float) eg 112.02 as $112 and ¢2
    */
   @Deprecated public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
-      @NonNull String promoId, final float amount, @NonNull AffirmLogoType logoType,
+      @NonNull final String promoId, final float amount, @NonNull AffirmLogoType logoType,
       @NonNull AffirmColor affirmColor, @NonNull final PromoCallback promoCallback) {
 
     textView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        launchProductModal(textView.getContext(), amount, null);
+        boolean showPrequal = (boolean) v.getTag();
+        if (showPrequal) {
+          PrequalActivity.launch(textView.getContext(), environment.baseUrl1, String.format(
+                  "/apps/prequal?public_api_key=%s&unit_price=%f&promo_external_id=%s&isSDK=true&use_promo=True",
+                  merchant, amount, promoId));
+        } else {
+            launchProductModal(textView.getContext(), amount, null);
+        }
       }
     });
 
     final SpannablePromoCallback spannablePromoCallback = new SpannablePromoCallback() {
+
       @Override public void onFailure(Throwable throwable) {
         promoCallback.onFailure(textView, throwable);
       }
 
-      @Override public void onPromoWritten(final SpannableString editable) {
+      @Override public void onPromoWritten(final SpannableString editable, final boolean showPrequal) {
         textView.post(new Runnable() {
           @Override public void run() {
+            textView.setTag(showPrequal);
             textView.setText(editable);
             promoCallback.onPromoWritten(textView);
           }
