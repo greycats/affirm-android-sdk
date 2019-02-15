@@ -198,11 +198,11 @@ public final class Affirm {
         if (showPrequal) {
           if (TextUtils.isEmpty(promoId)) {
             PrequalActivity.launch(textView.getContext(), environment.baseUrl1, String.format(
-                    "/apps/prequal?public_api_key=%s&unit_price=%f&isSDK=true&use_promo=True",
+                    "/apps/prequal?public_api_key=%s&unit_price=%f&isSDK=true&use_promo=True&referring_url=https://androidsdk/",
                     merchant, amount));
           } else {
             PrequalActivity.launch(textView.getContext(), environment.baseUrl1, String.format(
-                    "/apps/prequal?public_api_key=%s&unit_price=%f&promo_external_id=%s&isSDK=true&use_promo=True",
+                    "/apps/prequal?public_api_key=%s&unit_price=%f&promo_external_id=%s&isSDK=true&use_promo=True&referring_url=https://androidsdk/",
                     merchant, amount, promoId));
           }
         } else {
