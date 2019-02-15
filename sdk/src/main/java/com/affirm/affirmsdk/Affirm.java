@@ -22,6 +22,7 @@ import static com.affirm.affirmsdk.ModalActivity.ModalType.SITE;
 public final class Affirm {
   private static final int CHECKOUT_REQUEST = 8076;
   private static final int VCN_CHECKOUT_REQUEST = 8077;
+  private static final String REFERRING_URL = "https://androidsdk/";
   private static volatile Affirm instance;
   private String merchant;
   private Environment environment;
@@ -198,12 +199,12 @@ public final class Affirm {
         if (showPrequal) {
           if (TextUtils.isEmpty(promoId)) {
             PrequalActivity.launch(textView.getContext(), environment.baseUrl1, String.format(
-                    "/apps/prequal?public_api_key=%s&unit_price=%f&isSDK=true&use_promo=True&referring_url=https://androidsdk/",
-                    merchant, amount));
+                    "/apps/prequal?public_api_key=%s&unit_price=%f&isSDK=true&use_promo=True&referring_url=%s",
+                    merchant, amount, REFERRING_URL), REFERRING_URL);
           } else {
             PrequalActivity.launch(textView.getContext(), environment.baseUrl1, String.format(
-                    "/apps/prequal?public_api_key=%s&unit_price=%f&promo_external_id=%s&isSDK=true&use_promo=True&referring_url=https://androidsdk/",
-                    merchant, amount, promoId));
+                    "/apps/prequal?public_api_key=%s&unit_price=%f&promo_external_id=%s&isSDK=true&use_promo=True&referring_url=%s",
+                    merchant, amount, promoId, REFERRING_URL), REFERRING_URL);
           }
         } else {
             launchProductModal(textView.getContext(), amount, null);
