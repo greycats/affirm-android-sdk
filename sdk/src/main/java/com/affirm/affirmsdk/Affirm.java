@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import com.affirm.affirmsdk.di.AffirmInjector;
@@ -169,7 +170,7 @@ public final class Affirm {
    *
    * @param amount (Float) eg 112.02 as $112 and ¢2
    */
-  public CancellableRequest writePromoToTextView(@NonNull String promoId, final float amount,
+  public CancellableRequest writePromoToTextView(@Nullable String promoId, final float amount,
       float textSize, Typeface typeface, @NonNull AffirmLogoType logoType,
       @NonNull AffirmColor affirmColor, @NonNull Context context,
       @NonNull SpannablePromoCallback promoCallback) {
@@ -188,16 +189,22 @@ public final class Affirm {
    * @param amount (Float) eg 112.02 as $112 and ¢2
    */
   @Deprecated public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
-      @NonNull final String promoId, final float amount, @NonNull AffirmLogoType logoType,
+      @Nullable final String promoId, final float amount, @NonNull AffirmLogoType logoType,
       @NonNull AffirmColor affirmColor, @NonNull final PromoCallback promoCallback) {
 
     textView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         boolean showPrequal = (boolean) v.getTag();
         if (showPrequal) {
-          PrequalActivity.launch(textView.getContext(), environment.baseUrl1, String.format(
-                  "/apps/prequal?public_api_key=%s&unit_price=%f&promo_external_id=%s&isSDK=true&use_promo=True",
-                  merchant, amount, promoId));
+          if (TextUtils.isEmpty(promoId)) {
+            PrequalActivity.launch(textView.getContext(), environment.baseUrl1, String.format(
+                    "/apps/prequal?public_api_key=%s&unit_price=%f&isSDK=true&use_promo=True",
+                    merchant, amount));
+          } else {
+            PrequalActivity.launch(textView.getContext(), environment.baseUrl1, String.format(
+                    "/apps/prequal?public_api_key=%s&unit_price=%f&promo_external_id=%s&isSDK=true&use_promo=True",
+                    merchant, amount, promoId));
+          }
         } else {
             launchProductModal(textView.getContext(), amount, null);
         }
