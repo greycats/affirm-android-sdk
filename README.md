@@ -3,6 +3,10 @@ Affirm Android SDK
 
 Easily integrate Affirm checkouts on merchant's native apps
 
+## Run Sample
+1. Create `gradle.properties` below the `sdk` directory
+2. Then copy `gradle.properties.template` to `gradle.properties`
+
 ## Download
 
 Download via Gradle:
