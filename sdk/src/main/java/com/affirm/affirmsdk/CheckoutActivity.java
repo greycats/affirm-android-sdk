@@ -62,9 +62,9 @@ public final class CheckoutActivity extends AppCompatActivity
 
     ViewUtils.hideActionBar(this);
 
-    setContentView(R.layout.activity_checkout);
-    webView = (WebView) findViewById(R.id.webview);
-    progressIndicator = (View) findViewById(R.id.progressIndicator);
+    setContentView(R.layout.activity_webview);
+    webView = findViewById(R.id.webview);
+    progressIndicator = findViewById(R.id.progressIndicator);
 
     setupWebview();
 

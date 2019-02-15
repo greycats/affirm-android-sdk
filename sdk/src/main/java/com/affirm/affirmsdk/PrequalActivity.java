@@ -39,7 +39,7 @@ public class PrequalActivity extends AppCompatActivity
       baseUrlExtra = getIntent().getStringExtra(BASE_URL_EXTRA);
     }
 
-    setContentView(R.layout.activity_prequal);
+    setContentView(R.layout.activity_webview);
     webView = findViewById(R.id.webview);
     progressIndicator = findViewById(R.id.progressIndicator);
 
