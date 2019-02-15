@@ -172,12 +172,12 @@ public final class Affirm {
    */
   public CancellableRequest writePromoToTextView(@Nullable String promoId, final float amount,
       float textSize, Typeface typeface, @NonNull AffirmLogoType logoType,
-      @NonNull AffirmColor affirmColor, @NonNull Context context,
+      @NonNull AffirmColor affirmColor, boolean showCta, @NonNull Context context,
       @NonNull SpannablePromoCallback promoCallback) {
 
     final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
         component.provideTracking(), merchant, environment.baseUrl1, textSize, typeface, promoId,
-        amount, logoType, affirmColor, context, promoCallback);
+        amount, logoType, affirmColor, showCta, context, promoCallback);
     return promoJob.getPromo();
   }
 
@@ -190,7 +190,7 @@ public final class Affirm {
    */
   @Deprecated public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
       @Nullable final String promoId, final float amount, @NonNull AffirmLogoType logoType,
-      @NonNull AffirmColor affirmColor, @NonNull final PromoCallback promoCallback) {
+      @NonNull AffirmColor affirmColor, boolean showCta, @NonNull final PromoCallback promoCallback) {
 
     textView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -230,7 +230,7 @@ public final class Affirm {
 
     final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
         component.provideTracking(), merchant, environment.baseUrl1, textView.getTextSize(),
-        textView.getTypeface(), promoId, amount, logoType, affirmColor, textView.getContext(),
+        textView.getTypeface(), promoId, amount, logoType, affirmColor, showCta, textView.getContext(),
         spannablePromoCallback);
     return promoJob.getPromo();
   }

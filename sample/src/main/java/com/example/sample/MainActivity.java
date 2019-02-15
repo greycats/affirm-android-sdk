@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
     // "SFCRL4VYS0C78607"
     aslowasPromo =
         affirm.writePromoToTextView(promo, null, 1100, AffirmDisplayTypeLogo,
-            AffirmColorTypeBlue, new PromoCallback() {
+            AffirmColorTypeBlue, true, new PromoCallback() {
               @Override public void onPromoWritten(TextView textView) {
                 aslowasPromo = null;
               }
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity
 
     // "SFCRL4VYS0C78607"
     aslowasPromo2 = affirm.writePromoToTextView(null, 1100, promo2.getTextSize(),
-        promo2.getTypeface(), AffirmDisplayTypeSymbol, AffirmColorTypeBlack, this,
+        promo2.getTypeface(), AffirmDisplayTypeSymbol, AffirmColorTypeBlack, true, this,
         new SpannablePromoCallback() {
           @Override public void onPromoWritten(final SpannableString editable, final boolean showPrequal) {
             promo2.post(new Runnable() {
