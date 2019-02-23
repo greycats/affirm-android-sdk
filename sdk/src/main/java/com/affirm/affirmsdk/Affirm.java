@@ -177,14 +177,37 @@ public final class Affirm {
    *
    * @param amount (Float) eg 112.02 as $112 and ¢2
    */
-  public CancellableRequest writePromoToTextView(@Nullable String promoId, final float amount,
+  public CancellableRequest writePromoToTextView(@NonNull final TextView textView, @Nullable final String promoId, final float amount,
       float textSize, Typeface typeface, @NonNull AffirmLogoType logoType,
       @NonNull AffirmColor affirmColor, boolean showCta, @NonNull Context context,
-      @NonNull SpannablePromoCallback promoCallback) {
+      @NonNull final SpannablePromoCallback promoCallback) {
+
+    textView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        boolean showPrequal = (boolean) v.getTag();
+        if (showPrequal) {
+          launchPrequal(textView.getContext(), amount, promoId);
+        } else {
+          launchProductModal(textView.getContext(), amount, null);
+        }
+      }
+    });
+
+    final SpannablePromoCallback spannablePromoCallback = new SpannablePromoCallback() {
+
+      @Override public void onFailure(Throwable throwable) {
+        promoCallback.onFailure(throwable);
+      }
+
+      @Override public void onPromoWritten(final SpannableString editable, final boolean showPrequal) {
+        textView.setTag(showPrequal);
+        promoCallback.onPromoWritten(editable, showPrequal);
+      }
+    };
 
     final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
         component.provideTracking(), merchant, environment.baseUrl1, textSize, typeface, promoId,
-        amount, logoType, affirmColor, showCta, context, promoCallback);
+        amount, logoType, affirmColor, showCta, context, spannablePromoCallback);
     return promoJob.getPromo();
   }
 

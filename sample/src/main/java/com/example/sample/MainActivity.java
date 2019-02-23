@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
             });
 
     // "SFCRL4VYS0C78607"
-    aslowasPromo2 = affirm.writePromoToTextView(null, 1100, promo2.getTextSize(),
+    aslowasPromo2 = affirm.writePromoToTextView(promo2, null, 1100, promo2.getTextSize(),
         promo2.getTypeface(), AffirmDisplayTypeSymbol, AffirmColorTypeBlack, true, this,
         new SpannablePromoCallback() {
           @Override public void onPromoWritten(final SpannableString editable, final boolean showPrequal) {
