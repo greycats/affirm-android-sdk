@@ -94,7 +94,7 @@ public class ModalActivity extends AppCompatActivity
       baseUrlExtra = getIntent().getStringExtra(BASE_URL_EXTRA);
     }
 
-    setContentView(R.layout.activity_checkout);
+    setContentView(R.layout.activity_webview);
     webView = findViewById(R.id.webview);
     progressIndicator = findViewById(R.id.progressIndicator);
 

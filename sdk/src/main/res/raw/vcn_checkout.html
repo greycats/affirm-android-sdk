@@ -1,54 +1,69 @@
-<html>
-    <head>
-        <script>
-window.onload = function go() {
-  var url = "{{URL}}";
-  var js_callback_id = "{{JS_CALLBACK_ID}}";
-  var confirm_cb_url = "{{CONFIRM_CB_URL}}";
-  var cancelled_cb_url = "{{CANCELLED_CB_URL}}";
+<!DOCTYPE html>
+<head>
+    <script>
+        window.onload = function go() {
+            var url = "{{URL}}";
+            var postMessageId = "{{JS_CALLBACK_ID}}";
+            var confirmCbUrl = "{{CONFIRM_CB_URL}}";
+            var cancelledCbUrl = "{{CANCELLED_CB_URL}}";
 
-  var receiver = document.getElementById('receiver').contentWindow;
+            function baseUrl(url) {
+                var pathArray = url.split('/');
+                var host = pathArray[2];
+                return 'https://' + host;
+            }
 
-  var interval = window.setInterval(function() {
-    console.log("sending to popup");
-    receiver.postMessage(JSON.stringify({id: js_callback_id}), baseUrl(url));
-  } , 500);
+            function encodeData(data) {
+                return encodeURIComponent(JSON.stringify(data));
+            }
 
-  function baseUrl(url) {
-    var pathArray = url.split( '/' );
-    var host = pathArray[2];
-    return 'https://' + host;
-  }
+            var interval;
 
-  function encodeData(data) {
-    return encodeURIComponent(JSON.stringify(data));
-  }
+            window.addEventListener('message', function () {
+                console.log(event.data);
 
-  window.addEventListener("message", function() {
-    if(interval) {
-      window.clearInterval(interval);
-    }
+                var data;
+                var receiver = document.getElementById('receiver').contentWindow;
 
-    var data = JSON.parse(event.data);
+                try {
+                    data = JSON.parse(event.data);
+                } catch (e) {
+                }
 
-    if(data.ack) {
-      return;
-    } else if(data && data.success) {
-      window.location.href = confirm_cb_url + "?data=" + encodeData(data.data);
-    } else {
-      window.location.href = cancelled_cb_url;
-    }
+                if (data && data.name === 'AFFIRM_CHECKOUT_INIT' && interval) {
+                    window.clearInterval(interval)
+                    return;
+                }
 
-  }, false);
-}
-        </script>
-    </head>
+                if (!data || (data && data.ack || [postMessageId, 'AFFIRM_FRAME_MESSAGES'].indexOf(data.id) === -1)) {
+                    return;
+                }
 
-    <body>
-        <iframe
-                id="receiver"
-                style="position: absolute; height: 100%; width: 100%; border: none; top: 0; left: 0;"
-                src="{{URL2}}"/>
-    </body>
+                if (data.name === 'iframe-ready' || data.name === 'iframe-dimensions') {
+                    if (!interval) {
+                        interval = window.setInterval(function () {
+                            console.log('sending to popup');
+                            receiver.postMessage(JSON.stringify({ id: postMessageId }), baseUrl(url));
+                        }, 500);
+                    }
+                } else if (data.name === 'AFFIRM_CHECKOUT_CLOSE') {
+                    if (data.success) {
+                        window.location.href = confirmCbUrl + '?data=' + encodeData(data.data);
+                    } else {
+                        window.location.href = cancelledCbUrl;
+                    }
+                }
+            }, false);
+        };
+    </script>
+</head>
+
+<body>
+    <iframe
+            id="receiver"
+            style="position: absolute; height: 100%; width: 100%; border: none; top: 0; left: 0;"
+            src="{{URL2}}">
+    </iframe>
+</body>
 
 </html>

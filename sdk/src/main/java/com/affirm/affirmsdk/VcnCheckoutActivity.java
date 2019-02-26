@@ -67,9 +67,9 @@ public class VcnCheckoutActivity extends AppCompatActivity
 
     ViewUtils.hideActionBar(this);
 
-    setContentView(R.layout.activity_vcn_checkout);
-    webView = (WebView) findViewById(R.id.webview);
-    progressIndicator = (View) findViewById(R.id.progressIndicator);
+    setContentView(R.layout.activity_webview);
+    webView = findViewById(R.id.webview);
+    progressIndicator = findViewById(R.id.progressIndicator);
 
     setupWebview();
 

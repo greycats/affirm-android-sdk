@@ -25,10 +25,11 @@ class PromoJob {
 
   private AffirmRequest currentRequest;
   private boolean isCancelled = false;
+  private boolean showCta;
 
   PromoJob(Gson gson, OkHttpClient client, Tracker tracker, String publicKey, String baseUrl,
       float textSize, Typeface typeface, String promoId, float amount, AffirmLogoType logoType,
-      AffirmColor affirmColor, Context context, SpannablePromoCallback callback) {
+      AffirmColor affirmColor, boolean showCta, Context context, SpannablePromoCallback callback) {
     this.baseUrl = baseUrl;
     this.textSize = textSize;
     this.typeface = typeface;
@@ -37,6 +38,7 @@ class PromoJob {
     this.dollarAmount = amount;
     this.logoType = logoType;
     this.affirmColor = affirmColor;
+    this.showCta = showCta;
     this.callback = callback;
     this.gson = gson;
     this.client = client;
@@ -59,7 +61,7 @@ class PromoJob {
 
   private void getNewPromoResponse() {
     int centAmount = AffirmUtils.decimalDollarsToIntegerCents(dollarAmount);
-    final AffirmRequest.Endpoint endpoint = new PromoEndpoint(promoId, centAmount, publicKey);
+    final AffirmRequest.Endpoint endpoint = new PromoEndpoint(promoId, centAmount, publicKey, showCta);
     final AffirmRequest<PromoResponse> request =
         new AffirmRequest<>(PromoResponse.class, baseUrl, client, gson, endpoint, tracker);
     currentRequest = request;
@@ -67,7 +69,8 @@ class PromoJob {
     request.create(new AffirmRequest.Callback<PromoResponse>() {
       @Override public void onSuccess(PromoResponse result) {
         if (!isCancelled) {
-          callback.onPromoWritten(updateSpan(result.promo().ala()));
+          boolean showPrequal = !result.promo().promoConfig().promoStyle().equals("fast");
+          callback.onPromoWritten(updateSpan(result.promo().ala()), showPrequal);
         }
       }
 
