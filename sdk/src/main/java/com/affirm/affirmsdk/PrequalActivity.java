@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 
@@ -45,7 +46,7 @@ public class PrequalActivity extends AppCompatActivity
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    ViewUtils.hideActionBar(this);
+    ViewUtils.showCloseActionBar(this);
 
     if (savedInstanceState != null) {
       map = (HashMap<String, String>) savedInstanceState.getSerializable(MAP_EXTRA);
@@ -116,6 +117,18 @@ public class PrequalActivity extends AppCompatActivity
 
   @Override public void chromeLoadCompleted() {
     progressIndicator.setVisibility(View.GONE);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        finish();
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 }
 
