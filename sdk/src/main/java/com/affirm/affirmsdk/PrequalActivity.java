@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 
@@ -29,8 +30,8 @@ public class PrequalActivity extends AppCompatActivity
   private String baseUrlExtra;
   private HashMap<String, String> map;
 
-  static void launch(@NonNull Context context, @NonNull String apiKey, float amount, @Nullable String promoId,
-                     @NonNull String baseUrl) {
+  static void launch(@NonNull Context context, @NonNull String apiKey, float amount,
+      @Nullable String promoId, @NonNull String baseUrl) {
     final Intent intent = new Intent(context, PrequalActivity.class);
 
     final HashMap<String, String> map = new HashMap<>();
@@ -45,7 +46,7 @@ public class PrequalActivity extends AppCompatActivity
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    ViewUtils.hideActionBar(this);
+    ViewUtils.showCloseActionBar(this);
 
     if (savedInstanceState != null) {
       map = (HashMap<String, String>) savedInstanceState.getSerializable(MAP_EXTRA);
@@ -90,11 +91,13 @@ public class PrequalActivity extends AppCompatActivity
     String path;
     if (TextUtils.isEmpty(map.get(PROMO_ID))) {
       path = String.format(
-              "/apps/prequal?public_api_key=%s&unit_price=%s&isSDK=true&use_promo=True&referring_url=%s",
+              "/apps/prequal?public_api_key=%s&unit_price=%s&isSDK=true&use_promo=True"
+                      + "&referring_url=%s",
               map.get(API_KEY), map.get(AMOUNT), REFERRING_URL);
     } else {
       path = String.format(
-              "/apps/prequal?public_api_key=%s&unit_price=%s&promo_external_id=%s&isSDK=true&use_promo=True&referring_url=%s",
+              "/apps/prequal?public_api_key=%s&unit_price=%s&promo_external_id=%s&isSDK=true"
+                      + "&use_promo=True&referring_url=%s",
               map.get(API_KEY), map.get(AMOUNT), map.get(PROMO_ID), REFERRING_URL);
     }
     webView.loadUrl(PROTOCOL + baseUrlExtra + path);
@@ -114,6 +117,18 @@ public class PrequalActivity extends AppCompatActivity
 
   @Override public void chromeLoadCompleted() {
     progressIndicator.setVisibility(View.GONE);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        finish();
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 }
 

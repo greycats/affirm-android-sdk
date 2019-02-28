@@ -61,7 +61,8 @@ class PromoJob {
 
   private void getNewPromoResponse() {
     int centAmount = AffirmUtils.decimalDollarsToIntegerCents(dollarAmount);
-    final AffirmRequest.Endpoint endpoint = new PromoEndpoint(promoId, centAmount, publicKey, showCta);
+    final AffirmRequest.Endpoint endpoint = new PromoEndpoint(promoId, centAmount, publicKey,
+        showCta);
     final AffirmRequest<PromoResponse> request =
         new AffirmRequest<>(PromoResponse.class, baseUrl, client, gson, endpoint, tracker);
     currentRequest = request;

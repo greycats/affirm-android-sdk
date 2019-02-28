@@ -13,7 +13,8 @@ final class PromoEndpoint implements Endpoint {
   private final int centAmount;
   private final boolean showCta;
 
-  PromoEndpoint(@Nullable String promoId, int centAmount, @NonNull String publicKey, boolean showCta) {
+  PromoEndpoint(@Nullable String promoId, int centAmount, @NonNull String publicKey,
+      boolean showCta) {
     this.promoId = promoId;
     this.centAmount = centAmount;
     this.publicKey = publicKey;

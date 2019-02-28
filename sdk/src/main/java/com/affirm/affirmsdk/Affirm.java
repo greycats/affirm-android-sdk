@@ -177,7 +177,8 @@ public final class Affirm {
    *
    * @param amount (Float) eg 112.02 as $112 and ¢2
    */
-  public CancellableRequest writePromoToTextView(@NonNull final TextView textView, @Nullable final String promoId, final float amount,
+  public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
+      @Nullable final String promoId, final float amount,
       float textSize, Typeface typeface, @NonNull AffirmLogoType logoType,
       @NonNull AffirmColor affirmColor, boolean showCta, @NonNull Context context,
       @NonNull final SpannablePromoCallback promoCallback) {
@@ -199,7 +200,8 @@ public final class Affirm {
         promoCallback.onFailure(throwable);
       }
 
-      @Override public void onPromoWritten(final SpannableString editable, final boolean showPrequal) {
+      @Override public void onPromoWritten(final SpannableString editable,
+                                           final boolean showPrequal) {
         textView.setTag(showPrequal);
         promoCallback.onPromoWritten(editable, showPrequal);
       }
@@ -220,7 +222,8 @@ public final class Affirm {
    */
   @Deprecated public CancellableRequest writePromoToTextView(@NonNull final TextView textView,
       @Nullable final String promoId, final float amount, @NonNull AffirmLogoType logoType,
-      @NonNull AffirmColor affirmColor, boolean showCta, @NonNull final PromoCallback promoCallback) {
+      @NonNull AffirmColor affirmColor, boolean showCta,
+      @NonNull final PromoCallback promoCallback) {
 
     textView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -239,7 +242,8 @@ public final class Affirm {
         promoCallback.onFailure(textView, throwable);
       }
 
-      @Override public void onPromoWritten(final SpannableString editable, final boolean showPrequal) {
+      @Override public void onPromoWritten(final SpannableString editable,
+          final boolean showPrequal) {
         textView.post(new Runnable() {
           @Override public void run() {
             textView.setTag(showPrequal);
@@ -252,8 +256,8 @@ public final class Affirm {
 
     final PromoJob promoJob = new PromoJob(component.provideGson(), component.provideOkHttpClient(),
         component.provideTracking(), merchant, environment.baseUrl1, textView.getTextSize(),
-        textView.getTypeface(), promoId, amount, logoType, affirmColor, showCta, textView.getContext(),
-        spannablePromoCallback);
+        textView.getTypeface(), promoId, amount, logoType, affirmColor, showCta,
+        textView.getContext(), spannablePromoCallback);
     return promoJob.getPromo();
   }
 
