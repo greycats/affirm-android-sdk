@@ -2,6 +2,7 @@ package com.affirm.affirmsdk;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 final class AffirmWebView extends WebView {
@@ -20,6 +21,7 @@ final class AffirmWebView extends WebView {
     getSettings().setJavaScriptEnabled(true);
     getSettings().setDomStorageEnabled(true);
     getSettings().setSupportMultipleWindows(true);
+    getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
     setVerticalScrollBarEnabled(false);
   }
 }
