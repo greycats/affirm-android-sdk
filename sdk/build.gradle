@@ -94,7 +94,7 @@ task findbugsWrapper(dependsOn: 'findbugs') {}
 task pmdWrapper(dependsOn: 'pmd') {}
 task checkstyleWrapper(dependsOn: 'checkstyle') {}
 
-build.dependsOn findbugsWrapper
+//build.dependsOn findbugsWrapper
 check.dependsOn pmdWrapper
 check.dependsOn checkstyleWrapper
 
