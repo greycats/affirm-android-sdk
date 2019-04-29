@@ -1,3 +1,7 @@
+## If this is your first time integrating this Affirm android SDK, please use the following repository:
+```
+github "Affirm/affirm-merchant-sdk-android"
+```
 Affirm Android SDK
 ==================
 
