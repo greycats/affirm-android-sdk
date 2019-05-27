@@ -9,7 +9,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
-apply from: 'maven-push.gradle'
+//apply from: 'maven-push.gradle'
 
 def packageName = project.GROUP
 def libraryVersion = project.VERSION_NAME
