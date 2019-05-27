@@ -1,5 +1,7 @@
 package com.affirm.affirmsdk;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -41,8 +43,20 @@ public abstract class AffirmWebViewClient extends WebViewClient {
   abstract boolean hasCallbackUrl(WebView view, String url);
 
   @Override
+  public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) return;
+    callbacks.onWebViewError(new Exception("ErrorCode: " + errorCode
+            + ", Description: " + description
+            + ", FailingUrl: " + failingUrl));
+  }
+
+  @TargetApi(Build.VERSION_CODES.M)
+  @Override
   public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-    callbacks.onWebViewError(new Exception(error.toString()));
+    callbacks.onWebViewError(new Exception("ErrorCode: " + error.getErrorCode()
+            + ", Description: " + error.getDescription().toString()
+            + ", Method: " + request.getMethod()
+            + ", FailingUrl: " + request.getUrl().toString()));
   }
 
   public interface Callbacks {
