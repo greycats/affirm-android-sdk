@@ -1,5 +1,15 @@
 Change Log
 ==========
+Version 1.0.14 *(2019-04-16)*
+-----------------------------
+  * Updated VCN checkout
+  * Bug fixes
+
+Version 1.0.13 *(2019-03-1)*
+-----------------------------
+  * VCN Checkout updated
+  * Promo options updated
+  * Bug fixes
 
 Version 1.0.12.1 *(2019-02-1)*
 -----------------------------

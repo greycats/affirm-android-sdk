@@ -1,3 +1,7 @@
+## If this is your first time integrating this Affirm android SDK, please use the following repository:
+```
+github "Affirm/affirm-merchant-sdk-android"
+```
 Affirm Android SDK
 ==================
 
@@ -11,14 +15,14 @@ Easily integrate Affirm checkouts on merchant's native apps
 
 Download via Gradle:
 ```groovy
-compile "com.affirm:affirm-android-sdk:1.0.12.1"
+compile "com.affirm:affirm-android-sdk:1.0.14"
 ```
 or Maven:
 ```xml
 <dependency>
   <groupId>com.affirm</groupId>
   <artifactId>affirm-android-sdk</artifactId>
-  <version>1.0.12.1</version>
+  <version>1.0.14</version>
 </dependency>
 ```
 Snapshots of the development version are available in [Sonatype's `snapshots` repository](https://oss.sonatype.org/content/repositories/snapshots/).
